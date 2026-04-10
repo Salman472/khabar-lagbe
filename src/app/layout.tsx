@@ -16,7 +16,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-    
+    className="w-full min-h-screen bg-linear-to-b from-green-100 to-white"
     >
       <body className="min-h-full flex flex-col">{children}</body>
     </html>
