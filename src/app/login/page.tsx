@@ -1,3 +1,4 @@
+"use client"
 import {
   ArrowLeft,
   EyeIcon,
@@ -8,47 +9,35 @@ import {
   Mail,
   User,
 } from "lucide-react";
-import React, { useState } from "react";
+import React, { FormEvent, useState } from "react";
 import { motion } from "motion/react";
-import GoogleLogin from "../socialLogin/GoogleLogin";
 import axios from "axios";
+import GoogleLogin from "@/components/socialLogin/GoogleLogin";
 import { useRouter } from "next/navigation";
-type propType = {
-  prebStep: (s: number) => void;
-};
-const RegisterForm = ({ prebStep }: propType) => {
-  const [name, setName] = useState("");
+import { signIn, useSession } from "next-auth/react";
+
+const LoginForm = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading]=useState(false)
   const router=useRouter()
-  //   register function
-  const handleRegister = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const session=useSession()
+  console.log({session});
+  const handleLogin=async(e:FormEvent)=>{
+    e.preventDefault()
     setLoading(true)
     try {
-      const result = await axios.post("api/auth/register", {
-        name,
-        email,
-        password,
-      });
-      console.log(result.data);
-      setLoading(false)
+        await signIn('credentials',{email,password})
+        
     } catch (error) {
-      console.log(error);
-      setLoading(false)
+        console.log(error);
+        setLoading(false)
     }
-  };
+  }
   return (
     <div className="flex flex-col justify-center items-center min-h-screen px-6 py-10 relative bg-white">
-      <div
-        onClick={() => prebStep(1)}
-        className="absolute top-6 left-6 flex items-center gap-1 transition-colors cursor-pointer text-green-700 hover:text-green-800"
-      >
-        <ArrowLeft className="h-5 w-5" />
-        <span className="font-medium">Back</span>
-      </div>
+      
       <motion.h1
         initial={{
           opacity: 0,
@@ -63,7 +52,7 @@ const RegisterForm = ({ prebStep }: propType) => {
         }}
         className="text-4xl font-black text-green-700 mb-2"
       >
-        Create Account
+        Welcome Back
       </motion.h1>
       <motion.p
         initial={{
@@ -80,12 +69,12 @@ const RegisterForm = ({ prebStep }: propType) => {
         }}
         className="text-gray-600 mb-7"
       >
-        Join Khabar Lagbe
+        Login To Khabar Lagbe
       </motion.p>
       {/* form input */}
 
       <motion.form
-        onSubmit={handleRegister}
+        onSubmit={handleLogin}
         initial={{
           opacity: 0,
         }}
@@ -97,17 +86,7 @@ const RegisterForm = ({ prebStep }: propType) => {
         }}
         className="flex flex-col gap-5 w-full max-w-sm"
       >
-        {/* name input */}
-        <div className="relative">
-          <User className="absolute left-3 top-3.5 h-5 w-5 text-gray-400 cursor-pointer" />
-          <input
-            type="text"
-            placeholder="Your Name"
-            className="w-full border border-gray-300 rounded-xl py-3 pl-10 pr-4 text-gray-800 focus:ring-2 focus:ring-green-500 focus: outline-none "
-            onChange={(e) => setName(e.target.value)}
-            value={name}
-          />
-        </div>
+       
         {/* email input */}
         <div className="relative">
           <Mail className="absolute left-3 top-3.5 h-5 w-5 text-gray-400 cursor-pointer" />
@@ -143,7 +122,7 @@ const RegisterForm = ({ prebStep }: propType) => {
         </div>
         {/* form validation */}
         {(() => {
-          const formValidation = name !== "" && email !== "" && password !== "";
+          const formValidation =email !== "" && password !== "";
           return (
             <button
               disabled={!formValidation || loading}
@@ -168,11 +147,11 @@ const RegisterForm = ({ prebStep }: propType) => {
         {/* continue with google */}
         <GoogleLogin />
         <p className="text-sm text-gray-600 text-center mt-4 flex items-center justify-center gap-2 cursor-pointer">
-          <span>Already have an account?</span>
+          <span>went to create an account?</span>
 
-          <span onClick={()=>router.push('/login')} className="flex items-center gap-1 text-blue-600  hover:underline">
+          <span onClick={()=>router.push('/register')} className="flex items-center gap-1 text-blue-600  hover:underline">
             <LogIn size={16} />
-            Sign in
+            Sign up
           </span>
         </p>
       </motion.form>
@@ -180,4 +159,4 @@ const RegisterForm = ({ prebStep }: propType) => {
   );
 };
 
-export default RegisterForm;
+export default LoginForm;
