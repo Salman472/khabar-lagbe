@@ -8,7 +8,7 @@ const GoogleLogin = () => {
   const hangleGoogleButton=async(e:FormEvent)=>{
     setLoading(true)
     try {
-      await signIn('google')
+      await signIn('google',{callbackUrl:'/'})
       setLoading(false)
     } catch (error) {
       console.log(error);

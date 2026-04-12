@@ -1,13 +1,13 @@
 import mongoose from "mongoose";
 
 const mongodb_Uri=process.env.MONGO_DB_URI
-console.log({mongodb_Uri});
+// console.log({mongodb_Uri});
 if(!mongodb_Uri){
     throw new Error('db error');
 }
 
 let cached=global.mongoose
-console.log({cached});
+// console.log({cached});
 if(!cached){
     cached=global.mongoose={conn:null, promise:null}
 }
