@@ -33,6 +33,7 @@ const RegisterForm = ({ prebStep }: propType) => {
         email,
         password,
       });
+      router.push('/login')
       console.log(result.data);
       setLoading(false)
     } catch (error) {

@@ -28,8 +28,15 @@ const LoginForm = () => {
     e.preventDefault()
     setLoading(true)
     try {
-        await signIn('credentials',{email,password})
-        
+        const res=await signIn('credentials',{email,password, redirect:false})
+        if(res?.ok){
+
+          router.push('/')
+          setLoading(false)
+        }
+        else{
+          console.log(res.error);
+        }
     } catch (error) {
         console.log(error);
         setLoading(false)
