@@ -1,4 +1,7 @@
 import { auth } from '@/auth';
+import AdminDashboard from '@/components/dashboard/AdminDashboard';
+import DeliveryBoyDashboard from '@/components/dashboard/DeliveryBoyDashboard';
+import UserDashboard from '@/components/dashboard/UserDashboard';
 import EditMobileRole from '@/components/edit/EditMobileRole';
 import Navbar from '@/components/navbar/Navbar';
 import connectDb from '@/lib/db';
@@ -22,6 +25,7 @@ const Home = async() => {
   return (
     <>
      <Navbar user={plainUser}/>
+     {user.role== 'user'? (<UserDashboard/>):user.role=='admin'?(<AdminDashboard/>):(<DeliveryBoyDashboard/>)}
     </>
   );
 };

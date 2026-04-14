@@ -1,10 +1,11 @@
 import React from 'react';
+import Hero from '../home/hero/Hero';
 
 const UserDashboard = () => {
     return (
-        <div>
-            user dashboard
-        </div>
+        <>
+            <Hero/>
+        </>
     );
 };
 

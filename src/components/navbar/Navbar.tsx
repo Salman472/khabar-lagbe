@@ -1,5 +1,5 @@
 "use client";
-import { LogOut, Package, Search, ShoppingCart, User } from "lucide-react";
+import { LogOut, Package, Search, ShoppingCart, User, X } from "lucide-react";
 import mongoose from "mongoose";
 import Link from "next/link";
 import { AnimatePresence, motion } from "motion/react";
@@ -18,17 +18,23 @@ interface IUser {
 const Navbar = ({ user }: { user: IUser }) => {
   //   console.log(user);
   const [open, setOpen] = useState(false);
-  const profileDropDown = useRef<HTMLDivElement>(null)
+  const [openSearch, setOpenSearch] = useState(false);
+  // const [search, setSearch]=useState("")
+  const profileDropDown = useRef<HTMLDivElement>(null);
+  
   // click outside
-  useEffect(()=>{
-    const handleClickOutside =(e:MouseEvent)=>{
-      if(profileDropDown.current && !profileDropDown.current.contains(e.target as Node)){
-        setOpen(false)
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (
+        profileDropDown.current &&
+        !profileDropDown.current.contains(e.target as Node)
+      ) {
+        setOpen(false);
       }
-    }
-    document.addEventListener('mousedown', handleClickOutside)
-    return ()=>removeEventListener('mousedown', handleClickOutside)
-  },[])
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => removeEventListener("mousedown", handleClickOutside);
+  }, []);
   return (
     <motion.div
       initial={{
@@ -62,6 +68,12 @@ const Navbar = ({ user }: { user: IUser }) => {
       </form>
       {/* Right */}
       <div className="flex items-center gap-3">
+        {/* search icon */}
+        <div
+        onClick={()=>setOpenSearch((prev)=>!prev)}
+         className="bg-white text-green-600 p-2 rounded-full flex justify-center items-center hover:scale-105 transition relative shadow-sm hover:shadow-md md:hidden">
+          <Search />
+        </div>
         {/* Cart */}
         <Link
           href={"/cart"}
@@ -91,6 +103,7 @@ const Navbar = ({ user }: { user: IUser }) => {
               <User className="text-green-600 w-5 h-5" />
             )}
           </div>
+          {/* open drop down box */}
           <AnimatePresence>
             {open && (
               <motion.div
@@ -150,6 +163,34 @@ const Navbar = ({ user }: { user: IUser }) => {
                 </div>
               </motion.div>
             )}
+          </AnimatePresence>
+          {/* open search box */}
+          <AnimatePresence>
+           {
+            openSearch && (
+               <motion.div
+              initial={{ opacity: 0, y: -20, scale: 0.95 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: -20, scale: 0.95 }}
+              transition={{ duration: 0.25 }}
+              className="fixed top-24 left-1/2 -translate-x-1/2  w-[90%] bg-white rounded-full shadow-lg px-4 py-2 flex items-center z-50"
+            >
+                <Search className="h-5 w-5 mr-2 text-gray-500" />
+              <form className="w-full">
+                <input
+                // onChange={(e)=>setSearch(e.target.value)}
+                // value={search}
+                  type="text"
+                  placeholder="Search Groceries..."
+                  className="w-full outline-none text-gray-700 placeholder-bg-gray-400"
+                />
+              </form>
+              <button onClick={()=>setOpenSearch(false)}>
+                <X className="h-5 w-5 ml-2 text-gray-500" />
+              </button>
+            </motion.div>
+            )
+           }
           </AnimatePresence>
         </div>
       </div>
