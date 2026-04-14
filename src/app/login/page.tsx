@@ -7,11 +7,10 @@ import {
   Lock,
   LogIn,
   Mail,
-  User,
+ 
 } from "lucide-react";
 import React, { FormEvent, useState } from "react";
 import { motion } from "motion/react";
-import axios from "axios";
 import GoogleLogin from "@/components/socialLogin/GoogleLogin";
 import { useRouter } from "next/navigation";
 import { signIn, useSession } from "next-auth/react";
@@ -139,7 +138,7 @@ const LoginForm = () => {
                   : "bg-gray-300 text-gray-500 cursor-not-allowed"
               }`}
             >
-                {loading?<><Loader2 className="h-5 w-5 animate-spin"/><span>Register</span></> : "Register"}
+                {loading?<><Loader2 className="h-5 w-5 animate-spin"/><span>Login</span></> : "Login"}
               
             </button>
           );

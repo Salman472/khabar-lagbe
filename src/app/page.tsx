@@ -1,5 +1,6 @@
 import { auth } from '@/auth';
 import EditMobileRole from '@/components/edit/EditMobileRole';
+import Navbar from '@/components/navbar/Navbar';
 import connectDb from '@/lib/db';
 import User from '@/models/user.model';
 import { redirect } from 'next/navigation';
@@ -17,10 +18,11 @@ const Home = async() => {
   if(inComplete){
     return <EditMobileRole/>
   }
+  const plainUser=JSON.parse(JSON.stringify(user))
   return (
-    <div>
-     
-    </div>
+    <>
+     <Navbar user={plainUser}/>
+    </>
   );
 };
 

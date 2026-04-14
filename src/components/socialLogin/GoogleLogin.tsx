@@ -20,7 +20,7 @@ const GoogleLogin = () => {
       <button
       type="button"
         onClick={hangleGoogleButton}
-        className="flex items-center justify-center gap-3 w-full border border-gray-300 rounded-xl py-3 px-4 hover:bg-gray-100 transition-all duration-200"
+        className="flex items-center justify-center gap-3 w-full border border-gray-300 rounded-xl py-3 px-4 hover:bg-gray-100 transition-all duration-200 cursor-pointer"
       >
         
 

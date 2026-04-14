@@ -1,41 +1,40 @@
-'use client'
+"use client";
 
-import { useState } from 'react'
-import { User, Shield, Bike } from 'lucide-react'
-import axios from 'axios'
-import { redirect } from 'next/navigation'
+import { useState } from "react";
+import { User, Shield, Bike, Loader2 } from "lucide-react";
+import axios from "axios";
+import { redirect, useRouter } from "next/navigation";
 
 export default function EditMobileRole() {
-  const [role, setRole] = useState<string | null>(null)
-  const [phone, setPhone] = useState('')
-  const [loading, setLoading]=useState(false)
-// console.log(role,phone);
+  const [role, setRole] = useState<string | null>(null);
+  const [phone, setPhone] = useState("");
+  const [loading, setLoading] = useState(false);
+  const router=useRouter()
+  // console.log(role,phone);
   const roles = [
-    {id:'admin', name: 'Admin', icon: <Shield size={24} /> },
-    {id:'user', name: 'User', icon: <User size={24} /> },
-    {id:'deliveryBoy', name: 'Delivery Boy', icon: <Bike size={24} /> },
-  ]
-//   handle button Submit
-const handleSubmit=async()=>{
-    setLoading(true)
+    { id: "admin", name: "Admin", icon: <Shield size={24} /> },
+    { id: "user", name: "User", icon: <User size={24} /> },
+    { id: "deliveryBoy", name: "Delivery Boy", icon: <Bike size={24} /> },
+  ];
+  //   handle button Submit
+  const handleSubmit = async () => {
+    setLoading(true);
     try {
-        const result=await axios.post('/api/user/edit-mobile-role',{
-            role:role,
-            mobile:phone
-        })
-        console.log('edit mobile and role',result.data);
-         setLoading(false)
-        redirect('/')
-       
+      const result = await axios.post("/api/user/edit-mobile-role", {
+        role: role,
+        mobile: phone,
+      });
+      console.log("edit mobile and role", result.data);
+      setLoading(false);
+      router.push('/')
     } catch (error) {
-        console.log(error);
-        setLoading(false)
+      console.log(error);
+      setLoading(false);
     }
-}
+  };
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-green-50 px-4">
-      
       {/* Title */}
       <h1 className="text-3xl font-bold text-green-600 mb-8">
         Select Your Role
@@ -50,8 +49,8 @@ const handleSubmit=async()=>{
             className={`cursor-pointer w-48 h-32 flex flex-col items-center justify-center rounded-xl border transition-all
             ${
               role === item.id
-                ? 'border-green-500 bg-green-100'
-                : 'border-gray-300 bg-white hover:border-green-400'
+                ? "border-green-500 bg-green-100"
+                : "border-gray-300 bg-white hover:border-green-400"
             }`}
           >
             <div className="mb-2 text-gray-700">{item.icon}</div>
@@ -76,15 +75,17 @@ const handleSubmit=async()=>{
 
       {/* Button */}
       <button
-      onClick={handleSubmit}
-        disabled={!role || phone.length !=11}
-    className={`px-6 py-3 rounded-full bg-gray-300 text-gray-600 flex items-center gap-2 disabled:opacity-70 hover:bg-gray-400 transition ${
-        role && phone.length == 11 ?"bg-green-600 hover:bg-green-700 text-white cursor-pointer"
-                  : "bg-gray-300 text-gray-500 cursor-not-allowed"
-    }`}
+        onClick={handleSubmit}
+        disabled={!role || phone.length != 11}
+        className={`px-6 py-3 rounded-full bg-gray-300 text-gray-600 flex items-center gap-2 disabled:opacity-70 hover:bg-gray-400 transition ${
+          role && phone.length == 11
+            ? "bg-green-600 hover:bg-green-700 text-white cursor-pointer"
+            : "bg-gray-300 text-gray-500 cursor-not-allowed"
+        }`}
       >
-        Go to Home →
+        {loading?<><Loader2 className="h-5 w-5 animate-spin"/><span>Go to Home →</span></> : "Go to Home →"}
+        
       </button>
     </div>
-  )
+  );
 }
