@@ -98,7 +98,7 @@ const Navbar = ({ user }: { user: IUser }) => {
             <div className="flex flex-col gap-4">
               <Link
                 className="flex items-center gap-3 bg-white/10 hover:bg-white/20 transition p-3 rounded-xl cursor-pointer"
-                href={""}
+                href={"/admin/add-grocery"}
               >
                 <PlusCircle className="h-5 w-5" /> Add Grocery
               </Link>
@@ -203,7 +203,7 @@ const Navbar = ({ user }: { user: IUser }) => {
             <div className="hidden md:flex items-center gap-4">
               <Link
                 className="flex items-center gap-2 bg-white text-green-700 font-semibold px-4 py-2 rounded-full hover:bg-green-100 transition-all"
-                href={""}
+                href={"/admin/add-grocery"}
               >
                 <PlusCircle className="h-5 w-5" /> Add Grocery
               </Link>
