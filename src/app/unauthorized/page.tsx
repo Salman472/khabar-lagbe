@@ -19,7 +19,7 @@ const Unauthorized = () => {
 
         {/* Title */}
         <h1 className="text-2xl font-bold text-gray-800 mb-2">
-          Unauthorized Access
+           Access Denied
         </h1>
 
         {/* Description */}
@@ -30,7 +30,7 @@ const Unauthorized = () => {
         {/* Buttons */}
         <div className="flex flex-col sm:flex-row gap-3 justify-center">
           <button
-            onClick={() => router.back()}
+            onClick={() => router.push('/')}
             className="flex items-center justify-center gap-2 px-4 py-2 rounded-xl border border-gray-300 hover:bg-gray-100 transition cursor-pointer" 
           >
             <ArrowLeft className="w-4 h-4" />

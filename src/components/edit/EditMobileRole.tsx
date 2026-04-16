@@ -4,12 +4,14 @@ import { useState } from "react";
 import { User, Shield, Bike, Loader2 } from "lucide-react";
 import axios from "axios";
 import { redirect, useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 
 export default function EditMobileRole() {
   const [role, setRole] = useState<string | null>(null);
   const [phone, setPhone] = useState("");
   const [loading, setLoading] = useState(false);
   const router=useRouter()
+  const {update}=useSession()
   // console.log(role,phone);
   const roles = [
     { id: "admin", name: "Admin", icon: <Shield size={24} /> },
@@ -25,6 +27,7 @@ export default function EditMobileRole() {
         mobile: phone,
       });
       console.log("edit mobile and role", result.data);
+      await update({role:role})
       setLoading(false);
       router.push('/')
     } catch (error) {

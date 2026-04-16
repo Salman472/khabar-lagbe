@@ -4,8 +4,10 @@ import connectDb from "./lib/db";
 import User from "./models/user.model";
 import bcrypt from "bcryptjs";
 import Google from "next-auth/providers/google";
+import { Serializer } from "v8";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
+  
   providers: [
     Credentials({
       credentials: {
@@ -56,16 +58,20 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       return true
     },
     // credentials
-    jwt({token, user}) {
+    jwt({token, user, trigger, session}) {
         if(user){
             token.id=user.id
             token.name=user.name
             token.email=user.email
             token.role=user.role
         }
+        if(trigger == "update"){
+          token.role=session.role
+        }
         return token
     },
     session({session, token}){
+      // console.log(session);
         if(session.user){
             session.user.id=token.id as string
             session.user.name=token.name as string
@@ -74,7 +80,9 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         }
         return session
     }
+    
   },
+  
   pages:{
     signIn:"/login",
     error:"/login"
