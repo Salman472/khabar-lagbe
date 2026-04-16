@@ -10,7 +10,7 @@ const Hero = () => {
       {
         id: 1,
         icon: (
-          <Leaf className="h-14 w-14 sm:h-20 sm:w-20 text-yellow-400 drop-shadow-lg" />
+          <Leaf className="h-14 w-14 sm:h-20 sm:w-20 text-green-400 drop-shadow-lg" />
         ),
         title: "Fresh Organic Groceries 🌱",
         subTitle:
@@ -21,7 +21,7 @@ const Hero = () => {
       {
         id: 2,
         icon: (
-          <Truck className="h-14 w-14 sm:h-20 sm:w-20 text-yellow-400 drop-shadow-lg" />
+          <Truck className="h-14 w-14 sm:h-20 sm:w-20 text-green-400 drop-shadow-lg" />
         ),
         title: "Fast & Reliable Delivery 🚚",
         subTitle:
@@ -32,7 +32,7 @@ const Hero = () => {
       {
         id: 3,
         icon: (
-          <Smartphone className="h-14 w-14 sm:h-20 sm:w-20 text-yellow-400 drop-shadow-lg" />
+          <Smartphone className="h-14 w-14 sm:h-20 sm:w-20 text-green-400 drop-shadow-lg" />
         ),
         title: "Shop Anytime, Anywhere 📱",
         subTitle:
