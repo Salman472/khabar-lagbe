@@ -109,7 +109,7 @@ const Hero = () => {
           <motion.button
             whileHover={{ scale: 1.08 }}
             whileTap={{ scale: 0.95 }}
-            className="inline-flex items-center gap-2 bg-green-400 text-black font-semibold px-5 py-3 rounded-full shadow-lg hover:bg-green-300 transition"
+            className="inline-flex items-center gap-2 bg-green-400 text-black font-semibold px-5 py-3 rounded-full shadow-lg hover:bg-green-300 transition cursor-pointer"
           >
             <ShoppingBag size={18} />
             {slides[current].btnText}
