@@ -33,7 +33,10 @@ const grocerySchema=new Schema<IGrocery>({
     },
     unit:{
         type:String,
-        required:true
+        required:true,
+        enum:[
+            "kg", "g", "liter", "ml", "piece", "pack"
+        ]
     },
     price:{
         type:String,
