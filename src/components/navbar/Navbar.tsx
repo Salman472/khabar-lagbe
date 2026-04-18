@@ -291,6 +291,7 @@ const Navbar = ({ user }: { user: IUser }) => {
 
                 {/* Menu Items */}
                 <div className="mt-2 flex flex-col gap-1">
+                  {user.role == 'user' && <>
                   <Link
                     href="/myOrder"
                     onClick={() => setOpen(false)}
@@ -299,6 +300,7 @@ const Navbar = ({ user }: { user: IUser }) => {
                     <Package size={18} />
                     My Orders
                   </Link>
+                  </>}
 
                   <button
                     onClick={() => {
