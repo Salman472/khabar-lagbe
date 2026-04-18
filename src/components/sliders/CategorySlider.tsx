@@ -76,7 +76,7 @@ export default function CategorySlider() {
         scrollRef.current.scrollBy({left:scrollAmount, behavior:'smooth'})
         
     }
-
+    // button scroll
     const checkScroll =()=>{
       if(!scrollRef.current) return
       // console.log('scrollWidth', scrollRef.current.scrollWidth);
@@ -84,13 +84,29 @@ export default function CategorySlider() {
       // console.log('leftWidth', scrollRef.current.scrollLeft);
       const {scrollWidth, clientWidth, scrollLeft}=scrollRef.current
       setShowLeft(scrollLeft > 0)
-      setShowRight((scrollLeft+clientWidth) <= scrollWidth)
+      setShowRight((scrollLeft+clientWidth) <= scrollWidth -5)
 
     }
     useEffect(()=>{
       scrollRef.current?.addEventListener('scroll', checkScroll)
       checkScroll()
       return ()=>removeEventListener('scroll', checkScroll)
+    },[])
+
+    // auth scroll
+    useEffect(()=>{
+      const autoScroll=setInterval(() => {
+        if(!scrollRef.current) return
+        const {scrollWidth, clientWidth, scrollLeft}=scrollRef.current
+        if((scrollLeft+clientWidth) >= scrollWidth){
+          scrollRef.current.scrollTo({left:0, behavior:'smooth'})
+        }
+        else{
+          scrollRef.current.scrollBy({left:200, behavior:'smooth'})
+        }
+        
+      }, 3000);
+      return ()=>clearInterval(autoScroll)
     },[])
     
   return (
