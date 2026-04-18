@@ -24,11 +24,11 @@ import { NextRequest, NextResponse } from "next/server";
     if(file){
         imageUrl = await uploadOnCloudinary(file)
     }
-    const grocery = await Grocery.create({
+    const groceries = await Grocery.create({
         name,category, price, unit, image:imageUrl
     })
     return NextResponse.json(
-         grocery,
+         groceries,
         {status:200}
     )
 

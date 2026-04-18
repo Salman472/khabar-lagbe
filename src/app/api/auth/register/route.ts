@@ -28,12 +28,12 @@ export async function POST(req:NextRequest) {
 
         // create new user
 
-        const user=await User.create({
+        const users=await User.create({
             name, email, password:hashPassword
         })
 
         return NextResponse.json(
-            user,
+            users,
             {status:200}
         )
     

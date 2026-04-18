@@ -280,7 +280,7 @@ const Navbar = ({ user }: { user: IUser }) => {
                   </div>
 
                   <div className="flex flex-col leading-tight">
-                    <h1 className="text-sm font-semibold text-gray-800 truncate max-w-[140px]">
+                    <h1 className="text-sm font-semibold text-gray-800 truncate max-w-35">
                       {user?.name || "User"}
                     </h1>
                     <p className="text-xs text-gray-500 capitalize">
