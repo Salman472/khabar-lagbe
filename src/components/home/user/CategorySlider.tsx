@@ -110,7 +110,7 @@ export default function CategorySlider() {
     },[])
     
   return (
-    <div className="min-h-screen bg-linear-to-b from-white via-gray-50 to-white py-12 overflow-hidden">
+    <div className=" bg-linear-to-b from-white via-gray-50 to-white py-12 overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 relative">
         {/* Header with Animation */}
         <motion.div
@@ -223,49 +223,7 @@ export default function CategorySlider() {
         </motion.button>}
        
 
-        {/* Popular Grocery Items Section */}
-        {/* <motion.div 
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: false }}
-          className="mt-16"
-        >
-          <motion.h2 
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: false }}
-            transition={{duration:0.5}}
-            className="text-3xl font-bold text-emerald-700 text-center mb-10"
-          >
-            Popular Grocery Items
-          </motion.h2>
-          
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
-            {[1, 2, 3, 4, 5, 6].map((i, index) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 40 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: false }}
-                transition={{ delay: index * 0.05 }}
-                whileHover={{ y: -8, scale: 1.02 }}
-                className="bg-white rounded-2xl overflow-hidden shadow hover:shadow-xl transition-all border border-gray-100 cursor-pointer"
-              >
-                <motion.div 
-                  className="h-48 bg-linear-to-br from-emerald-100 to-teal-100 flex items-center justify-center text-7xl"
-                  whileHover={{ scale: 1.1 }}
-                  transition={{ duration: 0.3 }}
-                >
-                  🛍️
-                </motion.div>
-                <div className="p-4">
-                  <h3 className="font-semibold text-gray-800">Fresh Product {i}</h3>
-                  <p className="text-emerald-600 font-medium mt-1">₹ 89.00</p>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </motion.div> */}
+       
       </div>
     </div>
   );
