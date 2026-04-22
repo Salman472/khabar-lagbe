@@ -3,6 +3,9 @@ import mongoose from "mongoose";
 import Image from "next/image";
 import { motion } from "motion/react";
 import { ShoppingCart } from "lucide-react";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "@/redux/store";
+import { AddToCard } from "@/redux/cardSlice";
 
 interface IGrocery {
   _id?: mongoose.Types.ObjectId;
@@ -17,6 +20,7 @@ interface IGrocery {
 
 const GroceryItem = ({ grocery }: { grocery: IGrocery }) => {
   const { name, image, category, price, unit } = grocery;
+  const dispatch=useDispatch<AppDispatch>()
 
   return (
     <motion.div
@@ -65,6 +69,7 @@ const GroceryItem = ({ grocery }: { grocery: IGrocery }) => {
             whileTap={{ scale: 0.9 }}
             whileHover={{ scale: 1.1 }}
             className="p-2 rounded-full bg-emerald-100 text-emerald-600 hover:bg-emerald-500 hover:text-white transition cursor-pointer"
+            onClick={()=>dispatch(AddToCard({...grocery,quantity:1}))}
           >
             <ShoppingCart size={18} />
           </motion.button>

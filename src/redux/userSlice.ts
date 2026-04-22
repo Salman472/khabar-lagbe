@@ -22,7 +22,7 @@ const initialState: IUserSlice = {
   
 }
 
-export const counterSlice = createSlice({
+export const userSlice = createSlice({
   name: 'user',
   // `createSlice` will infer the state type from the `initialState` argument
   initialState,
@@ -33,6 +33,6 @@ export const counterSlice = createSlice({
   },
 })
 
-export const { SetUserData } = counterSlice.actions
+export const { SetUserData } = userSlice.actions
 
-export default counterSlice.reducer
+export default userSlice.reducer
