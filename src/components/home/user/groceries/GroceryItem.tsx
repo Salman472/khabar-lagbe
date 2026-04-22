@@ -3,8 +3,8 @@ import mongoose from "mongoose";
 import Image from "next/image";
 import { motion } from "motion/react";
 import { ShoppingCart } from "lucide-react";
-import { useDispatch } from "react-redux";
-import { AppDispatch } from "@/redux/store";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "@/redux/store";
 import { AddToCard } from "@/redux/cardSlice";
 
 interface IGrocery {
@@ -21,7 +21,8 @@ interface IGrocery {
 const GroceryItem = ({ grocery }: { grocery: IGrocery }) => {
   const { name, image, category, price, unit } = grocery;
   const dispatch=useDispatch<AppDispatch>()
-
+  const {cardData}=useSelector((state:RootState)=>(state.card))
+  const cardItem=cardData.find(i=>i._id == grocery._id)
   return (
     <motion.div
       initial={{ opacity: 0, y: 60, scale: 0.95 }}
@@ -64,15 +65,82 @@ const GroceryItem = ({ grocery }: { grocery: IGrocery }) => {
           <span className="text-emerald-600 font-bold text-lg">
             ৳ {price}
           </span>
-
-          <motion.button
+        {
+          !cardItem? <motion.button
             whileTap={{ scale: 0.9 }}
             whileHover={{ scale: 1.1 }}
             className="p-2 rounded-full bg-emerald-100 text-emerald-600 hover:bg-emerald-500 hover:text-white transition cursor-pointer"
             onClick={()=>dispatch(AddToCard({...grocery,quantity:1}))}
           >
             <ShoppingCart size={18} />
+          </motion.button> 
+          : 
+            <div className="flex items-center justify-center">
+
+      <motion.div
+        initial="rest"
+        whileHover="hover"
+        animate="rest"
+        variants={{
+          rest: { width: 32 },   
+          hover: { width: 105 }  
+        }}
+        transition={{ type: "spring", stiffness: 300, damping: 25 }}
+        className="relative h-8 flex items-center justify-center bg-white rounded-2xl shadow-md cursor-pointer overflow-hidden"
+      >
+
+        {/* Default Count */}
+        <motion.span
+          variants={{
+            rest: { opacity: 1, x: 0 },
+            hover: { opacity: 0, x: -20 }
+          }}
+          transition={{ duration: 0.2 }}
+          className="absolute text-lg font-semibold"
+        >
+          {cardItem.quantity}
+        </motion.span>
+
+        {/* Hover Content */}
+        <motion.div
+          variants={{
+            rest: { opacity: 0, x: 40 },
+            hover: { opacity: 1, x: 0 }
+          }}
+          transition={{ duration: 0.25 }}
+          className="absolute right-2 flex items-center gap-2 "
+        >
+          
+          {/* Minus */}
+          <motion.button
+            whileTap={{ scale: 0.8 }}
+            whileHover={{ scale: 1.1 }}
+            className="w-6 h-6 flex items-center justify-center rounded-md bg-red-100 text-red-600 text-lg font-bold "
+          >
+            -
           </motion.button>
+
+          {/* Count */}
+          <span className="text-lg font-semibold w-5 text-center">
+            {cardItem.quantity}
+          </span>
+
+          {/* Plus */}
+          <motion.button
+            whileTap={{ scale: 0.8 }}
+            whileHover={{ scale: 1.1 }}
+            className="w-6 h-6 flex items-center justify-center rounded-md bg-green-100 text-green-600 text-lg font-bold"
+          >
+            +
+          </motion.button>
+
+        </motion.div>
+
+      </motion.div>
+    </div>
+
+        }
+          
         </div>
       </div>
 

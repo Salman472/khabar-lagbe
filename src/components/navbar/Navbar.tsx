@@ -35,6 +35,7 @@ const Navbar = ({ user }: { user: IUser }) => {
   const [openSearch, setOpenSearch] = useState(false);
   const [operMenu, setOpenMenu] = useState(false);
   const {cardData}=useSelector((state:RootState)=>(state.card))
+  
   // const [search, setSearch]=useState("")
   const profileDropDown = useRef<HTMLDivElement>(null);
 
