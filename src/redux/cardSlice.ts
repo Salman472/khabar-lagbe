@@ -32,10 +32,24 @@ const initialState: CardSlice = {
   reducers: {
     AddToCard:(state,action:PayloadAction<IGrocery>)=>{
         state.cardData.push(action.payload)
+    },
+    IncriseQuantity:(state,action:PayloadAction<mongoose.Types.ObjectId>)=>{
+      const grocery=state.cardData.find(i=>i._id == action.payload)
+      if(grocery){
+        grocery.quantity=grocery.quantity+1
+      }
+    },
+    DecriseQuantity:(state,action:PayloadAction<mongoose.Types.ObjectId>)=>{
+      const grocery=state.cardData.find(i=>i._id == action.payload)
+      if(grocery?.quantity && grocery.quantity>1){
+        grocery.quantity=grocery.quantity - 1
+      }else{
+        state.cardData=state.cardData.filter(i=>i._id !== action.payload)
+      }
     }
   },
 })
 
-export const { AddToCard } = cardSlice.actions
+export const { AddToCard,IncriseQuantity, DecriseQuantity } = cardSlice.actions
 
 export default cardSlice.reducer

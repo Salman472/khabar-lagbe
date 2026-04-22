@@ -5,10 +5,10 @@ import { motion } from "motion/react";
 import { ShoppingCart } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/redux/store";
-import { AddToCard } from "@/redux/cardSlice";
+import { AddToCard, DecriseQuantity, IncriseQuantity } from "@/redux/cardSlice";
 
 interface IGrocery {
-  _id?: mongoose.Types.ObjectId;
+  _id: mongoose.Types.ObjectId;
   name: string;
   category: string;
   unit: string;
@@ -96,7 +96,7 @@ const GroceryItem = ({ grocery }: { grocery: IGrocery }) => {
             hover: { opacity: 0, x: -20 }
           }}
           transition={{ duration: 0.2 }}
-          className="absolute text-lg font-semibold"
+          className="absolute text-lg font-semibold cursor-pointer"
         >
           {cardItem.quantity}
         </motion.span>
@@ -108,14 +108,15 @@ const GroceryItem = ({ grocery }: { grocery: IGrocery }) => {
             hover: { opacity: 1, x: 0 }
           }}
           transition={{ duration: 0.25 }}
-          className="absolute right-2 flex items-center gap-2 "
+          className="absolute right-2 flex items-center gap-2 cursor-pointer"
         >
           
           {/* Minus */}
           <motion.button
+          onClick={()=>dispatch(DecriseQuantity(grocery._id))}
             whileTap={{ scale: 0.8 }}
             whileHover={{ scale: 1.1 }}
-            className="w-6 h-6 flex items-center justify-center rounded-md bg-red-100 text-red-600 text-lg font-bold "
+            className="w-6 h-6 flex items-center justify-center rounded-md bg-red-100 text-red-600 text-lg font-bold cursor-pointer"
           >
             -
           </motion.button>
@@ -127,9 +128,10 @@ const GroceryItem = ({ grocery }: { grocery: IGrocery }) => {
 
           {/* Plus */}
           <motion.button
+          onClick={()=>dispatch(IncriseQuantity(grocery._id))}
             whileTap={{ scale: 0.8 }}
             whileHover={{ scale: 1.1 }}
-            className="w-6 h-6 flex items-center justify-center rounded-md bg-green-100 text-green-600 text-lg font-bold"
+            className="w-6 h-6 flex items-center justify-center rounded-md bg-green-100 text-green-600 text-lg font-bold cursor-pointer"
           >
             +
           </motion.button>
