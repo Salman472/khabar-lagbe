@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import Provider from "@/components/sessionProvider/Provider";
 import StoreProvider from "@/redux/StoreProvider";
+import InitUser from "@/InitUser";
 
 export const metadata: Metadata = {
   title: "Khabar Lagbe",
@@ -20,7 +21,10 @@ export default function RootLayout({
     >
       <body className="min-h-full flex flex-col">
         <Provider>
-          <StoreProvider>{children}</StoreProvider>
+          <StoreProvider>
+            <InitUser/>
+            {children}
+            </StoreProvider>
         </Provider>
       </body>
     </html>
