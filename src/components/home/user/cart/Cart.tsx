@@ -27,6 +27,16 @@ interface IGrocery {
   updatedAt?: Date;
 }
 
+const rules = [
+  { min: 50000, rate: 0.18 },
+  { min: 30000, rate: 0.15 },
+  { min: 20000, rate: 0.12 },
+  { min: 10000, rate: 0.1 },
+  { min: 5000, rate: 0.07 },
+  { min: 2500, rate: 0.05 },
+  { min: 1000, rate: 0.03 },
+];
+
 export default function ShoppingCartPage() {
   const { cardData } = useSelector((state: RootState) => state.card);
   const dispatch = useDispatch<AppDispatch>();
@@ -35,9 +45,12 @@ const subTotal=cardData.reduce((acc,cart)=>{
   return acc + parseInt(cart.price)*cart.quantity
 },0)
 
-const discount=subTotal*0.01
+const rule=rules.find(r=>subTotal >r.min)
+const discount =rule ? Math.floor(subTotal*rule?.rate) : 0
+const total=subTotal - discount
+console.log({discount, total});
 
-console.log(subTotal,discount);
+
   return (
     <div className="min-h-screen bg-gray-50 p-6 md:p-12">
       <div className="max-w-5xl mx-auto">
@@ -146,13 +159,19 @@ console.log(subTotal,discount);
                   </span>
                 </div>
                 <div className="flex justify-between text-gray-600">
+                  <span>Discount</span>
+                  <span className="font-semibold">
+                    <span className="text-md mr-1 font-black">{discount > 0 && "৳"}</span>{discount}
+                  </span>
+                </div>
+                <div className="flex justify-between text-gray-600">
                   <span>Delivery Fee</span>
                   <span className="font-semibold text-green-600">Free</span>
                 </div>
                 <div className="border-t pt-4 flex justify-between items-center">
                   <span className="text-lg font-bold">Total</span>
                   <span className="text-2xl font-bold text-green-600">
-                    <span className="text-2xl mr-1 font-black">৳</span>{subTotal}
+                    <span className="text-2xl mr-1 font-black">৳</span>{total}
                   </span>
                 </div>
               </div>
