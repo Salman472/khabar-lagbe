@@ -9,11 +9,14 @@ import { AppDispatch, RootState } from "@/redux/store";
 
 import Image from "next/image";
 import {
+ 
   CartDelete,
   DecriseQuantity,
   IncriseQuantity,
+  SingleCartDelete,
 } from "@/redux/cardSlice";
 import mongoose from "mongoose";
+import { useRouter } from "next/navigation";
 
 interface IGrocery {
   _id?: mongoose.Types.ObjectId;
@@ -41,14 +44,15 @@ const rules = [
 export default function ShoppingCartPage() {
   const { cardData } = useSelector((state: RootState) => state.card);
   const dispatch = useDispatch<AppDispatch>();
+  const router=useRouter()
 
   const subTotal = cardData.reduce((acc, cart) => {
-    return acc + parseInt(cart.price) * cart.quantity;
+    return Math.ceil(acc + Number(cart.price) * cart.quantity)
   }, 0);
 
   const rule = rules.find((r) => subTotal > r.min);
   const discount = rule ? Math.floor(subTotal * rule.rate) : 0;
-  const total = subTotal - discount;
+  const total = Math.ceil(subTotal - discount)
 
   return (
     <div className="min-h-screen bg-gray-50 px-4 sm:px-6 md:px-10 lg:px-16 py-6">
@@ -91,8 +95,8 @@ export default function ShoppingCartPage() {
             <p className="text-gray-500 mb-4 text-sm sm:text-base">
               Add some products to get started
             </p>
-            <Link href="/">
-              <button className="bg-green-600 text-white px-5 py-2 rounded-xl hover:bg-green-700 transition">
+            <Link href="/" >
+              <button className="bg-green-600 text-white px-5 py-2 rounded-xl hover:bg-green-700 transition hover:cursor-pointer">
                 Shop Now
               </button>
             </Link>
@@ -240,7 +244,7 @@ export default function ShoppingCartPage() {
 
                         <button
                           onClick={() =>
-                            item._id && dispatch(CartDelete(item._id))
+                            item._id && dispatch(SingleCartDelete(item._id))
                           }
                           className="text-red-500 hover:bg-red-50 p-2 rounded-full cursor-pointer"
                         >
@@ -285,11 +289,15 @@ export default function ShoppingCartPage() {
                     </div>
                   </div>
 
-                  <button className="w-full mt-5 bg-green-600 text-white py-3 rounded-xl hover:bg-green-700 cursor-pointer transition">
+                  <button
+                  onClick={()=>router.push('/user/checkout')}
+                  className="w-full mt-5 bg-green-600 text-white py-3 rounded-xl hover:bg-green-700 cursor-pointer transition">
                     Checkout
                   </button>
 
-                  <button className="w-full mt-3 text-red-500 text-sm hover:underline cursor-pointer">
+                  <button
+                  onClick={()=>dispatch(CartDelete())}
+                  className="w-full mt-3 text-red-500 text-sm hover:underline cursor-pointer">
                     Clear Cart
                   </button>
                 </motion.div>

@@ -60,13 +60,16 @@ const cardSlice = createSlice({
       }
       cardSlice.caseReducers.CalculateTotals(state)
     },
-    CartDelete: (state, action: PayloadAction<mongoose.Types.ObjectId>) => {
+    SingleCartDelete: (state, action: PayloadAction<mongoose.Types.ObjectId>) => {
       state.cardData = state.cardData.filter((i) => i._id !== action.payload);
       cardSlice.caseReducers.CalculateTotals(state)
     },
+    CartDelete: (state) => {
+      state.cardData = []
+    },
     CalculateTotals: (state) => {
       state.subTotal = state.cardData.reduce(
-        (acc, item) => acc + Number(item.price) * item.quantity,
+        (acc, item) => Math.ceil( acc + Number(item.price) * item.quantity),
         0,
       );
       const rules = [
@@ -82,12 +85,12 @@ const cardSlice = createSlice({
       const rule = rules.find((r) => state.subTotal >= r.min);
       state.discount = rule ? Math.floor(state.subTotal * rule.rate) : 0;
 
-      state.total = state.subTotal - state.discount;
+      state.total = Math.ceil(state.subTotal - state.discount);
     },
   },
 });
 
-export const { AddToCard, IncriseQuantity, DecriseQuantity, CartDelete } =
+export const { AddToCard, IncriseQuantity, DecriseQuantity, SingleCartDelete, CartDelete } =
   cardSlice.actions;
 
 export default cardSlice.reducer;
