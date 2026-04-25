@@ -25,8 +25,8 @@ const GroceryItem = ({ grocery }: { grocery: IGrocery }) => {
   const cardItem=cardData.find(i=>i._id == grocery._id)
   return (
     <motion.div
-      initial={{ opacity: 0, y: 60, scale: 0.95 }}
-      whileInView={{ opacity: 1, y: 0, scale: 1 }}
+      initial={{ opacity: 0, y: 60 }}
+      whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: false }}
       transition={{ duration: 0.5 }}
     //   whileHover={{ y: -10 }}

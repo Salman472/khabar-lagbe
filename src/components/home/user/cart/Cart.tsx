@@ -53,7 +53,6 @@ export default function ShoppingCartPage() {
   return (
     <div className="min-h-screen bg-gray-50 px-4 sm:px-6 md:px-10 lg:px-16 py-6">
       <div className="max-w-6xl mx-auto">
-
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
           <Link
@@ -74,8 +73,18 @@ export default function ShoppingCartPage() {
 
         {/* Empty State */}
         {cardData.length === 0 ? (
-          <div className="flex flex-col items-center justify-center text-center py-20">
-            <ShoppingCart className="w-14 h-14 text-gray-300 mb-4" />
+          <motion.div
+          initial={{y:30, opacity:0}}
+                animate={{y:0, opacity:1}}
+                transition={{duration:0.5}}
+          className="flex flex-col items-center justify-center text-center py-20">
+            <motion.div
+            initial={{y:-40, opacity:0}}
+                animate={{y:0, opacity:1}}
+                transition={{duration:0.5}}
+            >
+              <ShoppingCart className="w-14 h-14 text-gray-300 mb-4" />
+            </motion.div>
             <h2 className="text-lg sm:text-xl font-semibold text-gray-700">
               Your cart is empty
             </h2>
@@ -87,11 +96,15 @@ export default function ShoppingCartPage() {
                 Shop Now
               </button>
             </Link>
-          </div>
+          </motion.div>
         ) : (
           <>
             {/* Discount Bar */}
-            <motion.div className="mt-4 mb-6 bg-green-50 border border-green-100 rounded-xl p-4 hidden md:block">
+            <motion.div
+            initial={{x:300, opacity:0}}
+                animate={{x:0, opacity:1}}
+                transition={{duration:0.9}}
+            className="mt-4 mb-6 bg-green-50 border border-green-100 rounded-xl p-4 hidden md:block">
               <div className="flex flex-col sm:flex-row sm:justify-between gap-2">
                 <p className="text-sm text-green-700 font-medium">
                   🎉 Discount:{" "}
@@ -120,62 +133,58 @@ export default function ShoppingCartPage() {
               </p>
             </motion.div>
 
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4 }}
+              className="mt-5 p-4 rounded-xl bg-green-50 border border-green-100 md:hidden"
+            >
+              <div className="flex justify-between items-center mb-2">
+                <span className="text-sm font-medium text-gray-700">
+                  Discount
+                </span>
 
+                <span className="text-sm font-bold text-green-600">
+                  {discount > 0 ? `-৳${discount}` : "৳0"}
+                </span>
+              </div>
 
-                  <motion.div
-  initial={{ opacity: 0, y: 10 }}
-  animate={{ opacity: 1, y: 0 }}
-  transition={{ duration: 0.4 }}
-  className="mt-5 p-4 rounded-xl bg-green-50 border border-green-100 md:hidden"
->
-  <div className="flex justify-between items-center mb-2">
-    <span className="text-sm font-medium text-gray-700">
-      Discount
-    </span>
+              <div className="h-2 bg-green-100 rounded-full overflow-hidden">
+                <motion.div
+                  initial={{ width: 0 }}
+                  animate={{
+                    width: rule
+                      ? `${Math.min(rule.rate * 100 * 5, 100)}%`
+                      : "0%",
+                  }}
+                  transition={{ duration: 0.6 }}
+                  className="h-full bg-green-500"
+                />
+              </div>
 
-    <span className="text-sm font-bold text-green-600">
-      {discount > 0 ? `-৳${discount}` : "৳0"}
-    </span>
-  </div>
+              <div className="flex justify-between mt-2 text-xs text-gray-500">
+                <span>SubTotal: ৳{subTotal}</span>
+                <span>Total Saving</span>
+              </div>
 
-  <div className="h-2 bg-green-100 rounded-full overflow-hidden">
-    <motion.div
-      initial={{ width: 0 }}
-      animate={{
-        width: rule ? `${Math.min(rule.rate * 100 * 5, 100)}%` : "0%",
-      }}
-      transition={{ duration: 0.6 }}
-      className="h-full bg-green-500"
-    />
-  </div>
-
-  <div className="flex justify-between mt-2 text-xs text-gray-500">
-    <span>SubTotal: ৳{subTotal}</span>
-    <span>Total Saving</span>
-  </div>
-
-  {discount > 0 && (
-    <p className="text-xs text-green-600 mt-2 font-medium">
-      🎉 You saved ৳{discount} on this order
-    </p>
-  )}
-</motion.div>
-
-
-
-
+              {discount > 0 && (
+                <p className="text-xs text-green-600 mt-2 font-medium">
+                  🎉 You saved ৳{discount} on this order
+                </p>
+              )}
+            </motion.div>
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-
               {/* CART ITEMS */}
               <div className="lg:col-span-2 space-y-4">
                 <AnimatePresence>
                   {cardData.map((item: IGrocery, index) => (
                     <motion.div
                       key={index}
-                      initial={{ opacity: 0, y: 15 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, x: -50 }}
+                      initial={{ opacity: 0, x: -300 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{duration:0.9, delay:index*0.2}}
+                      exit={{ opacity: 0 }}
                       className="bg-white p-4 sm:p-5 rounded-2xl shadow-sm border flex flex-col sm:flex-row sm:items-center justify-between gap-4"
                     >
                       {/* LEFT */}
@@ -210,7 +219,7 @@ export default function ShoppingCartPage() {
                             onClick={() =>
                               item._id && dispatch(DecriseQuantity(item._id))
                             }
-                            className="p-2 hover:bg-gray-200"
+                            className="p-2 hover:bg-gray-200 cursor-pointer"
                           >
                             <Minus className="w-4 h-4" />
                           </button>
@@ -223,7 +232,7 @@ export default function ShoppingCartPage() {
                             onClick={() =>
                               item._id && dispatch(IncriseQuantity(item._id))
                             }
-                            className="p-2 hover:bg-gray-200"
+                            className="p-2 hover:bg-gray-200 cursor-pointer"
                           >
                             <Plus className="w-4 h-4" />
                           </button>
@@ -233,7 +242,7 @@ export default function ShoppingCartPage() {
                           onClick={() =>
                             item._id && dispatch(CartDelete(item._id))
                           }
-                          className="text-red-500 hover:bg-red-50 p-2 rounded-full"
+                          className="text-red-500 hover:bg-red-50 p-2 rounded-full cursor-pointer"
                         >
                           <Trash2 className="w-5 h-5" />
                         </button>
@@ -245,7 +254,11 @@ export default function ShoppingCartPage() {
 
               {/* SUMMARY */}
               <div className="lg:col-span-1">
-                <motion.div className="bg-white p-5 rounded-2xl shadow-sm border lg:sticky lg:top-6">
+                <motion.div 
+                initial={{y:30, opacity:0}}
+                animate={{y:0, opacity:1}}
+                transition={{duration:0.5}}
+                className="bg-white p-5 rounded-2xl shadow-sm border lg:sticky lg:top-6">
                   <h2 className="text-lg sm:text-xl font-bold mb-5">
                     Order Summary
                   </h2>
@@ -272,11 +285,11 @@ export default function ShoppingCartPage() {
                     </div>
                   </div>
 
-                  <button className="w-full mt-5 bg-green-600 text-white py-3 rounded-xl hover:bg-green-700 transition">
+                  <button className="w-full mt-5 bg-green-600 text-white py-3 rounded-xl hover:bg-green-700 cursor-pointer transition">
                     Checkout
                   </button>
 
-                  <button className="w-full mt-3 text-red-500 text-sm hover:underline">
+                  <button className="w-full mt-3 text-red-500 text-sm hover:underline cursor-pointer">
                     Clear Cart
                   </button>
                 </motion.div>
