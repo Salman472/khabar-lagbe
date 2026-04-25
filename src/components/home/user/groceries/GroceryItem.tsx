@@ -25,12 +25,12 @@ const GroceryItem = ({ grocery }: { grocery: IGrocery }) => {
   const cardItem=cardData.find(i=>i._id == grocery._id)
   return (
     <motion.div
-      initial={{ opacity: 0, y: 60 }}
+      initial={{ opacity: 0, y: 30 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: false }}
       transition={{ duration: 0.5 }}
     //   whileHover={{ y: -10 }}
-      className="group relative rounded-3xl overflow-hidden  backdrop-blur-xl border border-gray-100 shadow-md hover:shadow-2xl transition-all duration-300"
+      className="group relative rounded-3xl overflow-hidden  backdrop-blur-xl border border-gray-100  hover:shadow-2xl transition-all duration-300 mx-2 "
     >
       {/* Image Section */}
       <div className="relative h-52 w-full overflow-hidden">

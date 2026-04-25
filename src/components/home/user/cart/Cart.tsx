@@ -121,7 +121,7 @@ export default function ShoppingCartPage() {
                 <motion.div
                   initial={{ width: 0 }}
                   animate={{
-                    width: `${Math.min((subTotal / 50000) * 100, 100)}%`,
+                    width: `${Math.min((subTotal / 100000) * 100, 100)}%`,
                   }}
                   transition={{ duration: 0.5 }}
                   className="h-full bg-green-600"
@@ -185,7 +185,7 @@ export default function ShoppingCartPage() {
                       animate={{ opacity: 1, x: 0 }}
                       transition={{duration:0.9, delay:index*0.2}}
                       exit={{ opacity: 0 }}
-                      className="bg-white p-4 sm:p-5 rounded-2xl shadow-sm border flex flex-col sm:flex-row sm:items-center justify-between gap-4"
+                      className="bg-white p-4 sm:p-5 rounded-2xl shadow-sm border hover:border-none hover:shadow-xl flex flex-col sm:flex-row sm:items-center justify-between gap-4"
                     >
                       {/* LEFT */}
                       <div className="flex items-center gap-4">
@@ -219,7 +219,7 @@ export default function ShoppingCartPage() {
                             onClick={() =>
                               item._id && dispatch(DecriseQuantity(item._id))
                             }
-                            className="p-2 hover:bg-gray-200 cursor-pointer"
+                            className="p-2 hover:bg-gray-200 cursor-pointer rounded-l-lg"
                           >
                             <Minus className="w-4 h-4" />
                           </button>
@@ -232,7 +232,7 @@ export default function ShoppingCartPage() {
                             onClick={() =>
                               item._id && dispatch(IncriseQuantity(item._id))
                             }
-                            className="p-2 hover:bg-gray-200 cursor-pointer"
+                            className="p-2 hover:bg-gray-200 cursor-pointer rounded-r-lg"
                           >
                             <Plus className="w-4 h-4" />
                           </button>
@@ -258,7 +258,7 @@ export default function ShoppingCartPage() {
                 initial={{y:30, opacity:0}}
                 animate={{y:0, opacity:1}}
                 transition={{duration:0.5}}
-                className="bg-white p-5 rounded-2xl shadow-sm border lg:sticky lg:top-6">
+                className="bg-white p-5 rounded-2xl shadow-sm border hover:border-none hover:shadow-xl lg:sticky lg:top-6">
                   <h2 className="text-lg sm:text-xl font-bold mb-5">
                     Order Summary
                   </h2>

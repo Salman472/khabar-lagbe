@@ -25,7 +25,7 @@ const Groceries = async () => {
   return (
   <div>
   <GHeader/>
-  <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 sm:gap-3 md:grid-cols-3 md:gap-4 lg:grid-cols-4 lg:gap-5">
+  <div className="grid grid-cols-1 gap-1 sm:grid-cols-1 sm:gap-2 md:grid-cols-2 md:gap-3 lg:grid-cols-4 lg:gap-5 my-10 max-w-7xl mx-auto">
         {plainGrocery.map((grocery: IGrocery, index: number) => (
           <GroceryItem key={index} grocery={grocery} />
         ))}
