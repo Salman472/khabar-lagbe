@@ -24,22 +24,24 @@ export default function CheckoutPage() {
     pinCode: "",
     fullAddress: "",
   });
+
   const [position, setPosition] = useState<[number, number] | null>(null);
   useEffect(() => {
     if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition((pos) => console.log(pos));
+      navigator.geolocation.getCurrentPosition((pos) => {
+        const {latitude,longitude}=pos.coords
+        setPosition([latitude,longitude])
+      });
     }
   }, []);
 
   
-  useEffect(() => {
-    if (userData?.name) {
-      setAddress((prev) => {
-        if (prev.fullName === userData.name) return prev;
-        return { ...prev, fullName: userData.name };
-      });
-    }
-  }, [userData]);
+ useEffect(()=>{
+  if(userData){
+    setAddress((prev)=>({...prev, fullName:userData.name || ''}))
+    setAddress((prev)=>({...prev, mobile:userData.mobile || ''}))
+  }
+ },[userData])
   return (
     <div className="min-h-screen bg-gray-50 p-4 md:p-8">
       <Link
@@ -74,7 +76,7 @@ export default function CheckoutPage() {
             <User size={16} className="text-green-500" />
             <input
               onChange={(e) =>
-                setAddress({ ...address, fullName: e.target.value })
+                setAddress((prev)=>({...prev, fullName:address.fullName || ''}))
               }
               value={address.fullName}
               placeholder="enter your full name"
@@ -88,7 +90,7 @@ export default function CheckoutPage() {
             <input
               value={address.mobile}
               onChange={(e) =>
-                setAddress({ ...address, mobile: e.target.value })
+                setAddress((prev)=>({...prev, mobile:address.mobile || ''}))
               }
               placeholder="enter your phone"
               className="flex-1 outline-none text-sm"
@@ -101,7 +103,7 @@ export default function CheckoutPage() {
             <input
               value={address.fullAddress}
               onChange={(e) =>
-                setAddress({ ...address, fullAddress: e.target.value })
+                setAddress((prev)=>({...prev, fullAddress:address.fullAddress || ''}))
               }
               placeholder="Full Address"
               className="flex-1 outline-none text-sm"
@@ -111,14 +113,14 @@ export default function CheckoutPage() {
           <div className="grid grid-cols-3 gap-2">
             <input
               value={address.city}
-              onChange={(e) => setAddress({ ...address, city: e.target.value })}
+              onChange={(e) => setAddress((prev)=>({...prev, city:address.city || ''}))}
               placeholder="City"
               className="border rounded-lg px-3 py-2 outline-none text-sm"
             />
             <input
               value={address.state}
               onChange={(e) =>
-                setAddress({ ...address, state: e.target.value })
+                setAddress((prev)=>({...prev, state:address.state || ''}))
               }
               placeholder="State"
               className="border rounded-lg px-3 py-2 outline-none text-sm"
@@ -126,7 +128,7 @@ export default function CheckoutPage() {
             <input
               value={address.pinCode}
               onChange={(e) =>
-                setAddress({ ...address, pinCode: e.target.value })
+                setAddress((prev)=>({...prev, pinCode:address.pinCode || ''}))
               }
               placeholder="ZIP"
               className="border rounded-lg px-3 py-2 outline-none text-sm"
