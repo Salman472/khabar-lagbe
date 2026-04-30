@@ -144,6 +144,10 @@ export default function CheckoutPage() {
               Search
             </button>
           </div>
+          {/* show map */}
+          <div className="relative mt-6 h-100 rounded-xl overflow-hidden shadow-inner border border-gray-300 ">
+
+          </div>
         </motion.div>
         {/* RIGHT - PAYMENT */}{" "}
         <motion.div
