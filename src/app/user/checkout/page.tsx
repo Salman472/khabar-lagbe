@@ -76,7 +76,7 @@ export default function CheckoutPage() {
           <div className="flex items-center border rounded-lg px-3 py-2 gap-2">
             <User size={16} className="text-green-500" />
             <input
-              onChange={(e) =>
+              onChange={() =>
                 setAddress((prev)=>({...prev, fullName:address.fullName || ''}))
               }
               value={address.fullName}
@@ -90,7 +90,7 @@ export default function CheckoutPage() {
             <Phone size={16} className="text-green-500" />
             <input
               value={address.mobile}
-              onChange={(e) =>
+              onChange={() =>
                 setAddress((prev)=>({...prev, mobile:address.mobile || ''}))
               }
               placeholder="enter your phone"
@@ -103,7 +103,7 @@ export default function CheckoutPage() {
             <MapPin size={16} className="text-green-500" />
             <input
               value={address.fullAddress}
-              onChange={(e) =>
+              onChange={() =>
                 setAddress((prev)=>({...prev, fullAddress:address.fullAddress || ''}))
               }
               placeholder="Full Address"
@@ -114,13 +114,13 @@ export default function CheckoutPage() {
           <div className="grid grid-cols-3 gap-2">
             <input
               value={address.city}
-              onChange={(e) => setAddress((prev)=>({...prev, city:address.city || ''}))}
+              onChange={() => setAddress((prev)=>({...prev, city:address.city || ''}))}
               placeholder="City"
               className="border rounded-lg px-3 py-2 outline-none text-sm"
             />
             <input
               value={address.state}
-              onChange={(e) =>
+              onChange={() =>
                 setAddress((prev)=>({...prev, state:address.state || ''}))
               }
               placeholder="State"
@@ -128,7 +128,7 @@ export default function CheckoutPage() {
             />
             <input
               value={address.pinCode}
-              onChange={(e) =>
+              onChange={() =>
                 setAddress((prev)=>({...prev, pinCode:address.pinCode || ''}))
               }
               placeholder="ZIP"
