@@ -13,6 +13,7 @@ import {
 import Link from "next/link";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
+import MapView from "@/components/home/user/MapView";
 
 export default function CheckoutPage() {
   const { userData } = useSelector((state: RootState) => state.user);
@@ -145,8 +146,8 @@ export default function CheckoutPage() {
             </button>
           </div>
           {/* show map */}
-          <div className="relative mt-6 h-100 rounded-xl overflow-hidden shadow-inner border border-gray-300 ">
-
+          <div className="relative mt-6 h-100 w-full rounded-xl overflow-hidden shadow-inner border border-gray-300 ">
+                <MapView possition={position}/>
           </div>
         </motion.div>
         {/* RIGHT - PAYMENT */}{" "}

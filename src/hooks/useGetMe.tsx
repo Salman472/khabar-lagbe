@@ -2,7 +2,7 @@
 import { AppDispatch } from "@/redux/store";
 import { SetUserData } from "@/redux/userSlice";
 import axios from "axios";
-import React, { useEffect } from "react";
+import  { useEffect } from "react";
 import { useDispatch } from "react-redux";
 
 const useGetMe = () => {
@@ -10,7 +10,7 @@ const useGetMe = () => {
   useEffect(() => {
     const getMe = async () => {
       try {
-        const result = await axios.get("api/me");
+        const result = await axios.get("/api/me");
         dispatch(SetUserData(result.data));
       } catch (error) {
         console.log(error);
