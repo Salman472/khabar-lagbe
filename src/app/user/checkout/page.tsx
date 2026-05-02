@@ -17,6 +17,7 @@ import { RootState } from "@/redux/store";
 import L, { LatLngExpression } from "leaflet";
 import { MapContainer, Marker, TileLayer, useMap } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
+import axios from "axios";
 
 const markerIcon = new L.Icon({
   iconUrl: "https://cdn-icons-png.flaticon.com/128/8587/8587894.png",
@@ -79,6 +80,20 @@ export default function CheckoutPage() {
       />
     );
   }
+
+  // reverse data by nominatim
+  useEffect(()=>{
+    const fetchAddredd=async()=>{
+      if(!position) return
+      try {
+        const result=await axios.get(`https://nominatim.openstreetmap.org/reverse?lat=${position[0]}&lon=${position[1]}&format=json`)
+        console.log(result.data);
+      } catch (error) {
+        console.log('location reverse error', error);
+      }
+    }
+    fetchAddredd()
+  },[position])
   return (
     <div className="min-h-screen bg-gray-50 p-4 md:p-8">
       <Link
