@@ -60,13 +60,13 @@ export default function CheckoutPage() {
 
   // dragable marker
   const DragebleMarker: React.FC = () => {
-    const map=useMap()
-    useEffect(()=>{
-      map.setView(position as LatLngExpression, 15, {animate:true})
-    },[map])
-    
+    const map = useMap();
+    useEffect(() => {
+      map.setView(position as LatLngExpression, 15, { animate: true });
+    }, [map]);
+
     return (
-     <Marker
+      <Marker
         icon={markerIcon}
         eventHandlers={{
           dragend: (e: L.LeafletEvent) => {
@@ -79,21 +79,30 @@ export default function CheckoutPage() {
         draggable={true}
       />
     );
-  }
+  };
 
   // reverse data by nominatim
-  useEffect(()=>{
-    const fetchAddredd=async()=>{
-      if(!position) return
+  useEffect(() => {
+    const fetchAddredd = async () => {
+      if (!position) return;
       try {
-        const result=await axios.get(`https://nominatim.openstreetmap.org/reverse?lat=${position[0]}&lon=${position[1]}&format=json`)
-        console.log(result.data);
+        const result = await axios.get(
+          `https://nominatim.openstreetmap.org/reverse?lat=${position[0]}&lon=${position[1]}&format=json`,
+        );
+        const data = result.data;
+        console.log(data);
+        setAddress({
+          city: data.address.city,
+          state: data.address.state,
+          pinCode: data.address.postcode,
+          fullAddress: data.display_name,
+        });
       } catch (error) {
-        console.log('location reverse error', error);
+        console.log("location reverse error", error);
       }
-    }
-    fetchAddredd()
-  },[position])
+    };
+    fetchAddredd();
+  }, [position]);
   return (
     <div className="min-h-screen bg-gray-50 p-4 md:p-8">
       <Link
@@ -212,20 +221,21 @@ export default function CheckoutPage() {
           </div>
           {/* show map */}
           <div className="relative mt-6 h-100 w-full rounded-xl overflow-hidden shadow-inner border border-gray-300 ">
-            {position && <MapContainer
-              center={position as LatLngExpression}
-              zoom={13}
-              scrollWheelZoom={true}
-              className="w-full h-full"
-            >
-              <TileLayer
-                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-              />
+            {position && (
+              <MapContainer
+                center={position as LatLngExpression}
+                zoom={13}
+                scrollWheelZoom={true}
+                className="w-full h-full"
+              >
+                <TileLayer
+                  attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                  url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                />
 
-              <DragebleMarker />
-               
-            </MapContainer>}
+                <DragebleMarker />
+              </MapContainer>
+            )}
           </div>
         </motion.div>
         {/* RIGHT - PAYMENT */}{" "}
