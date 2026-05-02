@@ -32,7 +32,7 @@ export default function CheckoutPage() {
       navigator.geolocation.getCurrentPosition((pos) => {
         const {latitude,longitude}=pos.coords
         setPosition([latitude,longitude])
-      });
+      }, (err)=>{console.log('location error', err)}, {enableHighAccuracy:true, maximumAge:0, timeout:10000});
     }
   }, []);
 
