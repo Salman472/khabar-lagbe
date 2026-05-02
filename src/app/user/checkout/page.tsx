@@ -13,8 +13,16 @@ import {
 import Link from "next/link";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
-import MapView from "@/components/home/user/MapView";
 
+import L, { LatLngExpression } from "leaflet";
+import { MapContainer, Marker, TileLayer, useMap } from "react-leaflet";
+import "leaflet/dist/leaflet.css";
+
+const markerIcon = new L.Icon({
+  iconUrl: "https://cdn-icons-png.flaticon.com/128/8587/8587894.png",
+  iconSize: [20, 20],
+  iconAnchor: [10, 20],
+});
 export default function CheckoutPage() {
   const { userData } = useSelector((state: RootState) => state.user);
   const [address, setAddress] = useState({
@@ -29,20 +37,48 @@ export default function CheckoutPage() {
   const [position, setPosition] = useState<[number, number] | null>(null);
   useEffect(() => {
     if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition((pos) => {
-        const {latitude,longitude}=pos.coords
-        setPosition([latitude,longitude])
-      }, (err)=>{console.log('location error', err)}, {enableHighAccuracy:true, maximumAge:0, timeout:10000});
+      navigator.geolocation.getCurrentPosition(
+        (pos) => {
+          const { latitude, longitude } = pos.coords;
+          setPosition([latitude, longitude]);
+        },
+        (err) => {
+          console.log("location error", err);
+        },
+        { enableHighAccuracy: true, maximumAge: 0, timeout: 10000 },
+      );
     }
   }, []);
 
-  
- useEffect(()=>{
-  if(userData){
-    setAddress((prev)=>({...prev, fullName:userData.name || ''}))
-    setAddress((prev)=>({...prev, mobile:userData.mobile || ''}))
+  useEffect(() => {
+    if (userData) {
+      setAddress((prev) => ({ ...prev, fullName: userData.name || "" }));
+      setAddress((prev) => ({ ...prev, mobile: userData.mobile || "" }));
+    }
+  }, [userData]);
+
+  // dragable marker
+  const DragebleMarker: React.FC = () => {
+    const map=useMap()
+    useEffect(()=>{
+      map.setView(position as LatLngExpression, 15, {animate:true})
+    },[map])
+    
+    return (
+     <Marker
+        icon={markerIcon}
+        eventHandlers={{
+          dragend: (e: L.LeafletEvent) => {
+            const marker = e.target as L.Marker;
+            const { lat, lng } = marker.getLatLng();
+            setPosition([lat, lng]);
+          },
+        }}
+        position={position as LatLngExpression}
+        draggable={true}
+      />
+    );
   }
- },[userData])
   return (
     <div className="min-h-screen bg-gray-50 p-4 md:p-8">
       <Link
@@ -77,7 +113,10 @@ export default function CheckoutPage() {
             <User size={16} className="text-green-500" />
             <input
               onChange={() =>
-                setAddress((prev)=>({...prev, fullName:address.fullName || ''}))
+                setAddress((prev) => ({
+                  ...prev,
+                  fullName: address.fullName || "",
+                }))
               }
               value={address.fullName}
               placeholder="enter your full name"
@@ -91,7 +130,10 @@ export default function CheckoutPage() {
             <input
               value={address.mobile}
               onChange={() =>
-                setAddress((prev)=>({...prev, mobile:address.mobile || ''}))
+                setAddress((prev) => ({
+                  ...prev,
+                  mobile: address.mobile || "",
+                }))
               }
               placeholder="enter your phone"
               className="flex-1 outline-none text-sm"
@@ -104,7 +146,10 @@ export default function CheckoutPage() {
             <input
               value={address.fullAddress}
               onChange={() =>
-                setAddress((prev)=>({...prev, fullAddress:address.fullAddress || ''}))
+                setAddress((prev) => ({
+                  ...prev,
+                  fullAddress: address.fullAddress || "",
+                }))
               }
               placeholder="Full Address"
               className="flex-1 outline-none text-sm"
@@ -114,14 +159,16 @@ export default function CheckoutPage() {
           <div className="grid grid-cols-3 gap-2">
             <input
               value={address.city}
-              onChange={() => setAddress((prev)=>({...prev, city:address.city || ''}))}
+              onChange={() =>
+                setAddress((prev) => ({ ...prev, city: address.city || "" }))
+              }
               placeholder="City"
               className="border rounded-lg px-3 py-2 outline-none text-sm"
             />
             <input
               value={address.state}
               onChange={() =>
-                setAddress((prev)=>({...prev, state:address.state || ''}))
+                setAddress((prev) => ({ ...prev, state: address.state || "" }))
               }
               placeholder="State"
               className="border rounded-lg px-3 py-2 outline-none text-sm"
@@ -129,7 +176,10 @@ export default function CheckoutPage() {
             <input
               value={address.pinCode}
               onChange={() =>
-                setAddress((prev)=>({...prev, pinCode:address.pinCode || ''}))
+                setAddress((prev) => ({
+                  ...prev,
+                  pinCode: address.pinCode || "",
+                }))
               }
               placeholder="ZIP"
               className="border rounded-lg px-3 py-2 outline-none text-sm"
@@ -147,7 +197,20 @@ export default function CheckoutPage() {
           </div>
           {/* show map */}
           <div className="relative mt-6 h-100 w-full rounded-xl overflow-hidden shadow-inner border border-gray-300 ">
-                <MapView possition={position}/>
+            {position && <MapContainer
+              center={position as LatLngExpression}
+              zoom={13}
+              scrollWheelZoom={true}
+              className="w-full h-full"
+            >
+              <TileLayer
+                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+              />
+
+              <DragebleMarker />
+               
+            </MapContainer>}
           </div>
         </motion.div>
         {/* RIGHT - PAYMENT */}{" "}
