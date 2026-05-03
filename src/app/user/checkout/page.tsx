@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
-import { MapPin, Phone, User, ArrowLeft, LocateFixed } from "lucide-react";
+import { MapPin, Phone, User, ArrowLeft, LocateFixed, Loader2 } from "lucide-react";
 import Link from "next/link";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
@@ -31,6 +31,7 @@ export default function CheckoutPage() {
   const { subTotal, discount, total } = useSelector(
     (state: RootState) => state.card,
   );
+  const [searchLoading, setSearchLoading]=useState(false)
   const [searchLocation, setSearchLocation] = useState("");
   const [position, setPosition] = useState<[number, number] | null>(null);
   useEffect(() => {
@@ -105,11 +106,13 @@ export default function CheckoutPage() {
   // handleSearchLocation
   const handleSearchLocation = async () => {
     // setup
+    setSearchLoading(true)
     const provider = new OpenStreetMapProvider();
 
     // search
     const results = await provider.search({ query: searchLocation });
     if (results) {
+      setSearchLoading(false)
       setPosition([results[0].y, results[0].x]);
     }
     console.log(results);
@@ -232,7 +235,9 @@ export default function CheckoutPage() {
               onClick={handleSearchLocation}
               className="bg-green-600 text-white px-4 rounded-lg cursor-pointer"
             >
-              Search
+              {searchLoading?<><div className="flex items-center">
+                <Loader2 className="h-5 w-5 animate-spin "/><span>Search</span>
+                </div></> : "Search"}
             </button>
           </div>
           {/* show map */}
