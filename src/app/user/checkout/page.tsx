@@ -18,6 +18,7 @@ import L, { LatLngExpression } from "leaflet";
 import { MapContainer, Marker, TileLayer, useMap } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import axios from "axios";
+import { OpenStreetMapProvider } from "leaflet-geosearch";
 
 const markerIcon = new L.Icon({
   iconUrl: "https://cdn-icons-png.flaticon.com/128/8587/8587894.png",
@@ -37,7 +38,7 @@ export default function CheckoutPage() {
   const { subTotal, discount, total } = useSelector(
     (state: RootState) => state.card,
   );
-
+  const [searchLocation, setSearchLocation]=useState('')
   const [position, setPosition] = useState<[number, number] | null>(null);
   useEffect(() => {
     if (navigator.geolocation) {
@@ -107,6 +108,20 @@ export default function CheckoutPage() {
     };
     fetchAddredd();
   }, [position]);
+
+  // handleSearchLocation
+  const handleSearchLocation=async()=>{
+    // setup
+const provider = new OpenStreetMapProvider();
+
+// search
+const results = await provider.search({ query: searchLocation });
+if(results){
+
+  setPosition([results[0].y,results[0].x ])
+}
+console.log(results);
+  }
   return (
     <div className=" bg-gray-50 p-4 md:p-8">
       <Link
@@ -213,13 +228,15 @@ export default function CheckoutPage() {
               className="border rounded-lg px-3 py-2 outline-none text-sm"
             />
           </div>
-
+              {/* search option */}
           <div className="flex gap-2">
             <input
               className="flex-1 border rounded-lg px-3 py-2 outline-none"
+              value={searchLocation}
+              onChange={(e)=>setSearchLocation(e.target.value)}
               placeholder="Search city or area..."
             />
-            <button className="bg-green-600 text-white px-4 rounded-lg cursor-pointer">
+            <button onClick={handleSearchLocation} className="bg-green-600 text-white px-4 rounded-lg cursor-pointer">
               Search
             </button>
           </div>
