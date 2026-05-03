@@ -34,6 +34,9 @@ export default function CheckoutPage() {
     pinCode: "",
     fullAddress: "",
   });
+  const { subTotal, discount, total } = useSelector(
+    (state: RootState) => state.card,
+  );
 
   const [position, setPosition] = useState<[number, number] | null>(null);
   useEffect(() => {
@@ -93,7 +96,7 @@ export default function CheckoutPage() {
         console.log(data);
         setAddress((prev) => ({
           ...prev,
-          city: (data.address.city) || (data.address.county),
+          city: data.address.city || data.address.county,
           state: data.address.state,
           pinCode: data.address.postcode,
           fullAddress: data.display_name,
@@ -105,7 +108,7 @@ export default function CheckoutPage() {
     fetchAddredd();
   }, [position]);
   return (
-    <div className="min-h-screen bg-gray-50 p-4 md:p-8">
+    <div className=" bg-gray-50 p-4 md:p-8">
       <Link
         href="/user/cart"
         className="flex items-center text-gray-600 hover:text-green-600 transition font-medium"
@@ -244,9 +247,9 @@ export default function CheckoutPage() {
           initial={{ opacity: 0, x: 50 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.6 }}
-          className="bg-white rounded-2xl shadow p-5 space-y-4"
+          className="bg-white rounded-2xl shadow p-5 space-y-4 h-64"
         >
-          {" "}
+          {/* {" "}
           <h2 className="font-semibold text-lg flex items-center gap-2">
             {" "}
             <CreditCard size={18} className="text-green-500" /> Payment
@@ -259,13 +262,34 @@ export default function CheckoutPage() {
           <PaymentOption
             icon={<Truck size={16} className="text-green-500" />}
             label="Cash on Delivery"
-          />{" "}
-          <div className="border-t pt-4 text-sm space-y-2">
+          />{" "} */}
+          {/* <div className="border-t pt-4 text-sm space-y-2">
             {" "}
             <Row label="Subtotal" value="৳ 279" />{" "}
             <Row label="Delivery Fee" value="৳ 0" />{" "}
             <Row label="Total" value="৳ 279" bold />{" "}
-          </div>{" "}
+          </div>{" "} */}
+          <div className="space-y-3 text-sm sm:text-base">
+            <div className="flex justify-between">
+              <span>Subtotal</span>
+              <span>৳{subTotal}</span>
+            </div>
+
+            <div className="flex justify-between">
+              <span>Discount</span>
+              <span className="text-green-600">-৳{discount}</span>
+            </div>
+
+            <div className="flex justify-between">
+              <span>Delivery</span>
+              <span className="text-green-600">Free</span>
+            </div>
+
+            <div className="border-t pt-3 flex justify-between font-bold text-lg">
+              <span>Total</span>
+              <span className="text-green-600">৳{total}</span>
+            </div>
+          </div>
           <motion.button
             whileTap={{ scale: 0.95 }}
             whileHover={{ scale: 1.02 }}
@@ -275,35 +299,9 @@ export default function CheckoutPage() {
             Place Order{" "}
           </motion.button>{" "}
         </motion.div>{" "}
-      </div>{" "}
+      </div>
     </div>
   );
 }
 
-// Payment Option
-function PaymentOption({ active, onClick, icon, label }: any) {
-  return (
-    <motion.div
-      onClick={onClick}
-      whileHover={{ scale: 1.02 }}
-      className={`flex items-center gap-2 border rounded-xl px-4 py-3 cursor-pointer transition ${
-        active ? "border-green-600 bg-green-50" : ""
-      }`}
-    >
-      {icon}
-      <span className="text-sm">{label}</span>
-    </motion.div>
-  );
-}
 
-// Price Row
-function Row({ label, value, bold }: any) {
-  return (
-    <div className="flex justify-between">
-      <span className={bold ? "font-semibold" : "text-gray-500"}>{label}</span>
-      <span className={bold ? "font-semibold text-green-600" : ""}>
-        {value}
-      </span>
-    </div>
-  );
-}
