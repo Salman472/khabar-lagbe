@@ -91,12 +91,13 @@ export default function CheckoutPage() {
         );
         const data = result.data;
         console.log(data);
-        setAddress({
-          city: data.address.city,
+        setAddress((prev) => ({
+          ...prev,
+          city: (data.address.city) || (data.address.county),
           state: data.address.state,
           pinCode: data.address.postcode,
           fullAddress: data.display_name,
-        });
+        }));
       } catch (error) {
         console.log("location reverse error", error);
       }
