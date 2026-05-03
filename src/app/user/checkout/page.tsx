@@ -2,14 +2,7 @@
 
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
-import {
-  MapPin,
-  Phone,
-  User,
-  CreditCard,
-  Truck,
-  ArrowLeft,
-} from "lucide-react";
+import { MapPin, Phone, User, ArrowLeft, LocateFixed } from "lucide-react";
 import Link from "next/link";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
@@ -38,7 +31,7 @@ export default function CheckoutPage() {
   const { subTotal, discount, total } = useSelector(
     (state: RootState) => state.card,
   );
-  const [searchLocation, setSearchLocation]=useState('')
+  const [searchLocation, setSearchLocation] = useState("");
   const [position, setPosition] = useState<[number, number] | null>(null);
   useEffect(() => {
     if (navigator.geolocation) {
@@ -110,18 +103,17 @@ export default function CheckoutPage() {
   }, [position]);
 
   // handleSearchLocation
-  const handleSearchLocation=async()=>{
+  const handleSearchLocation = async () => {
     // setup
-const provider = new OpenStreetMapProvider();
+    const provider = new OpenStreetMapProvider();
 
-// search
-const results = await provider.search({ query: searchLocation });
-if(results){
-
-  setPosition([results[0].y,results[0].x ])
-}
-console.log(results);
-  }
+    // search
+    const results = await provider.search({ query: searchLocation });
+    if (results) {
+      setPosition([results[0].y, results[0].x]);
+    }
+    console.log(results);
+  };
   return (
     <div className=" bg-gray-50 p-4 md:p-8">
       <Link
@@ -155,10 +147,10 @@ console.log(results);
           <div className="flex items-center border rounded-lg px-3 py-2 gap-2">
             <User size={16} className="text-green-500" />
             <input
-              onChange={() =>
+              onChange={(e) =>
                 setAddress((prev) => ({
                   ...prev,
-                  fullName: address.fullName || "",
+                  fullName: e.target.value,
                 }))
               }
               value={address.fullName}
@@ -172,10 +164,10 @@ console.log(results);
             <Phone size={16} className="text-green-500" />
             <input
               value={address.mobile}
-              onChange={() =>
+              onChange={(e) =>
                 setAddress((prev) => ({
                   ...prev,
-                  mobile: address.mobile || "",
+                  mobile: e.target.value,
                 }))
               }
               placeholder="enter your phone"
@@ -188,10 +180,10 @@ console.log(results);
             <MapPin size={16} className="text-green-500" />
             <input
               value={address.fullAddress}
-              onChange={() =>
+              onChange={(e) =>
                 setAddress((prev) => ({
                   ...prev,
-                  fullAddress: address.fullAddress || "",
+                  fullAddress: e.target.value,
                 }))
               }
               placeholder="Full Address"
@@ -202,41 +194,44 @@ console.log(results);
           <div className="grid grid-cols-3 gap-2">
             <input
               value={address.city}
-              onChange={() =>
-                setAddress((prev) => ({ ...prev, city: address.city || "" }))
+              onChange={(e) =>
+                setAddress((prev) => ({ ...prev, city: e.target.value }))
               }
               placeholder="City"
               className="border rounded-lg px-3 py-2 outline-none text-sm"
             />
             <input
               value={address.state}
-              onChange={() =>
-                setAddress((prev) => ({ ...prev, state: address.state || "" }))
+              onChange={(e) =>
+                setAddress((prev) => ({ ...prev, state: e.target.value }))
               }
               placeholder="State"
               className="border rounded-lg px-3 py-2 outline-none text-sm"
             />
             <input
               value={address.pinCode}
-              onChange={() =>
+              onChange={(e) =>
                 setAddress((prev) => ({
                   ...prev,
-                  pinCode: address.pinCode || "",
+                  pinCode: e.target.value,
                 }))
               }
               placeholder="ZIP"
               className="border rounded-lg px-3 py-2 outline-none text-sm"
             />
           </div>
-              {/* search option */}
+          {/* search option */}
           <div className="flex gap-2">
             <input
               className="flex-1 border rounded-lg px-3 py-2 outline-none"
               value={searchLocation}
-              onChange={(e)=>setSearchLocation(e.target.value)}
+              onChange={(e) => setSearchLocation(e.target.value)}
               placeholder="Search city or area..."
             />
-            <button onClick={handleSearchLocation} className="bg-green-600 text-white px-4 rounded-lg cursor-pointer">
+            <button
+              onClick={handleSearchLocation}
+              className="bg-green-600 text-white px-4 rounded-lg cursor-pointer"
+            >
               Search
             </button>
           </div>
@@ -257,6 +252,13 @@ console.log(results);
                 <DragebleMarker />
               </MapContainer>
             )}
+            <motion.button
+              className="absolute bottom-4 right-4 z-9999 flex items-center gap-2 bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-full shadow-md transition-all duration-200"
+              whileTap={{ scale: 0.95 }}
+              whileHover={{ scale: 1.05 }}
+            >
+              <LocateFixed size={20} />
+            </motion.button>
           </div>
         </motion.div>
         {/* RIGHT - PAYMENT */}{" "}
@@ -320,5 +322,3 @@ console.log(results);
     </div>
   );
 }
-
-
