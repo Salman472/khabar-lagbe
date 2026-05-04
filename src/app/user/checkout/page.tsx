@@ -63,6 +63,8 @@ export default function CheckoutPage() {
       map.setView(position as LatLngExpression, 15, { animate: true });
     }, [map]);
 
+   
+
     return (
       <Marker
         icon={markerIcon}
@@ -117,6 +119,23 @@ export default function CheckoutPage() {
     }
     console.log(results);
   };
+
+   // handle current location
+    const handleCurrentLocation=()=>{
+      if(navigator.geolocation){
+        navigator.geolocation.getCurrentPosition(
+          (pos)=>{
+            const {latitude, longitude}=pos.coords
+            setPosition([latitude,longitude])
+          },
+          (err) => {
+          console.log("location error", err);
+        },
+        { enableHighAccuracy: true, maximumAge: 0, timeout: 10000 },
+          
+        )
+      }
+    }
   return (
     <div className=" bg-gray-50 p-4 md:p-8">
       <Link
@@ -258,6 +277,7 @@ export default function CheckoutPage() {
               </MapContainer>
             )}
             <motion.button
+            onClick={handleCurrentLocation}
               className="absolute bottom-4 right-4 z-9999 flex items-center gap-2 bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-full shadow-md transition-all duration-200"
               whileTap={{ scale: 0.95 }}
               whileHover={{ scale: 1.05 }}
