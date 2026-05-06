@@ -17,6 +17,7 @@ interface IOrder {
   paymentMethod: "cod" | "online";
   address: {
     fullName: string;
+    mobile:string
     city: string;
     state: string;
     pinCode: string;
@@ -62,6 +63,7 @@ const orderSchema = new mongoose.Schema<IOrder>(
     },
     address: {
       fullName: String,
+      mobile:String,
       city: String,
       state: String,
       pinCode: String,
