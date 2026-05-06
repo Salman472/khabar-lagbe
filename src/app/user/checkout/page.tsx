@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
-import { MapPin, Phone, User, ArrowLeft, LocateFixed, Loader2 } from "lucide-react";
+import { MapPin, Phone, User, ArrowLeft, LocateFixed, Loader2, CreditCard, CreditCardIcon, Truck } from "lucide-react";
 import Link from "next/link";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
@@ -34,6 +34,7 @@ export default function CheckoutPage() {
   const [searchLoading, setSearchLoading]=useState(false)
   const [searchLocation, setSearchLocation] = useState("");
   const [position, setPosition] = useState<[number, number] | null>(null);
+  const [paymentMethod, setPaymentMethod]=useState<"cod" | "online">('online')
   useEffect(() => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
@@ -291,28 +292,34 @@ export default function CheckoutPage() {
           initial={{ opacity: 0, x: 50 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.6 }}
-          className="bg-white rounded-2xl shadow p-5 space-y-4 h-64"
+          className="bg-white rounded-2xl shadow p-5 space-y-5 max-h-110"
         >
-          {/* {" "}
+          
           <h2 className="font-semibold text-lg flex items-center gap-2">
-            {" "}
+            
             <CreditCard size={18} className="text-green-500" /> Payment
-            Method{" "}
-          </h2>{" "}
-          <PaymentOption
-            icon={<CreditCard size={16} className="text-green-500" />}
-            label="Pay Online (Stripe)"
-          />{" "}
-          <PaymentOption
-            icon={<Truck size={16} className="text-green-500" />}
-            label="Cash on Delivery"
-          />{" "} */}
-          {/* <div className="border-t pt-4 text-sm space-y-2">
-            {" "}
-            <Row label="Subtotal" value="৳ 279" />{" "}
-            <Row label="Delivery Fee" value="৳ 0" />{" "}
-            <Row label="Total" value="৳ 279" bold />{" "}
-          </div>{" "} */}
+            Method
+          </h2>
+          <div className="space-y-4">
+            {/* payment online button */}
+             <button
+             onClick={()=>setPaymentMethod('online')}
+             className={`flex items-center gap-3 w-full rounded-lg border p-3 transition-all ${paymentMethod === 'online'? 'border-green-600 bg-green-50 shadow-sm': 'hover:bg-gray-50' }`}
+             >
+              <CreditCardIcon/> <span>Pay Online (Stripe)</span>
+             </button>
+
+             {/* cash on delivery button */}
+             <button
+             onClick={()=>setPaymentMethod('cod')}
+             className={`flex items-center gap-3 w-full rounded-lg border p-3 transition-all ${paymentMethod === 'cod'? 'border-green-600 bg-green-50 shadow-sm': 'hover:bg-gray-50' }`}
+             >
+              <Truck/> <span>Pay Online (Stripe)</span>
+             </button>
+          </div>
+          
+        
+          
           <div className="space-y-3 text-sm sm:text-base">
             <div className="flex justify-between">
               <span>Subtotal</span>
@@ -340,9 +347,9 @@ export default function CheckoutPage() {
             className="w-full bg-green-600 text-white py-3 rounded-full font-medium cursor-pointer"
           >
             {" "}
-            Place Order{" "}
-          </motion.button>{" "}
-        </motion.div>{" "}
+            Place Order
+          </motion.button>
+        </motion.div>
       </div>
     </div>
   );
