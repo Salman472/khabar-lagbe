@@ -22,6 +22,7 @@ import { MapContainer, Marker, TileLayer, useMap } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import axios from "axios";
 import { OpenStreetMapProvider } from "leaflet-geosearch";
+import { useRouter } from "next/navigation";
 
 const markerIcon = new L.Icon({
   iconUrl: "https://cdn-icons-png.flaticon.com/128/8587/8587894.png",
@@ -42,11 +43,13 @@ export default function CheckoutPage() {
     (state: RootState) => state.card,
   );
   const [searchLoading, setSearchLoading] = useState(false);
+  const [orderLoading, setOrderLoading]=useState(false)
   const [searchLocation, setSearchLocation] = useState("");
   const [position, setPosition] = useState<[number, number] | null>(null);
   const [paymentMethod, setPaymentMethod] = useState<"cod" | "online">(
     "online",
   );
+  const router=useRouter()
   
   useEffect(() => {
     if (navigator.geolocation) {
@@ -149,11 +152,13 @@ export default function CheckoutPage() {
   };
   // cod = cash on delivery payment
   const handleCod = async () => {
+    setOrderLoading(true)
     try {
       if (!position) {
         return null;
       }
       const result = await axios.post("/api/user/order", {
+      
         userId: userData?._id,
         items: cardData.map((item) => ({
           grocery: item._id,
@@ -175,8 +180,12 @@ export default function CheckoutPage() {
           longitude: position[1],
         },
         paymentMethod
+        
       });
-      console.log(result.data);
+      setOrderLoading(false)
+      // console.log(result.data);
+      router.push('/user/order-success')
+
     } catch (error) {
       console.log("cod payment error", error);
     }
@@ -397,7 +406,18 @@ export default function CheckoutPage() {
             whileHover={{ scale: 1.02 }}
             className="w-full bg-green-600 text-white py-3 rounded-full font-medium cursor-pointer"
           >
+             {orderLoading ? (
+                <>
+                  <div className="flex items-center text-center justify-center gap-2">
+                    <Loader2 className="h-5 w-5 animate-spin " />
+                    {paymentMethod == "cod" ? "Place Order" : "Pay & Place Order"}
+                  </div>
+                </>
+              ) : (
+                <>
             {paymentMethod == "cod" ? "Place Order" : "Pay & Place Order"}
+                </>
+              )}
           </motion.button>
         </motion.div>
       </div>
