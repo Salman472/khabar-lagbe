@@ -320,34 +320,36 @@ export default function CheckoutPage() {
           
         
           
-          <div className="space-y-3 text-sm sm:text-base">
-            <div className="flex justify-between">
-              <span>Subtotal</span>
-              <span>৳{subTotal}</span>
-            </div>
+         <div className="space-y-3 text-sm sm:text-base">
 
-            <div className="flex justify-between">
-              <span>Discount</span>
-              <span className="text-green-600">-৳{discount}</span>
-            </div>
+  <div className="flex justify-between text-gray-600">
+    <span>Subtotal</span>
+    <span className="font-medium text-gray-800">৳{subTotal}</span>
+  </div>
 
-            <div className="flex justify-between">
-              <span>Delivery</span>
-              <span className="text-green-600">Free</span>
-            </div>
+  <div className="flex justify-between">
+    <span className="text-gray-600">Discount</span>
+    <span className="text-green-600 font-medium">-৳{discount}</span>
+  </div>
 
-            <div className="border-t pt-3 flex justify-between font-bold text-lg">
-              <span>Total</span>
-              <span className="text-green-600">৳{total}</span>
-            </div>
-          </div>
+  <div className="flex justify-between">
+    <span className="text-gray-600">Delivery</span>
+    <span className="text-green-500 font-medium">Free</span>
+  </div>
+
+  <div className="border-t border-dashed pt-4 flex justify-between items-center">
+    <span className="text-lg font-semibold text-gray-800">Total</span>
+    <span className="text-xl font-bold text-green-600">৳{total}</span>
+  </div>
+
+</div>
           <motion.button
             whileTap={{ scale: 0.95 }}
             whileHover={{ scale: 1.02 }}
             className="w-full bg-green-600 text-white py-3 rounded-full font-medium cursor-pointer"
           >
-            {" "}
-            Place Order
+            {paymentMethod == 'cod' ? "Place Order" : "Pay & Place Order"}
+            
           </motion.button>
         </motion.div>
       </div>
