@@ -8,11 +8,12 @@ interface IOrder {
       grocery: mongoose.Types.ObjectId;
       name: string;
       price: string;
+      image:string
       unit: string;
       quantity: number;
     },
   ];
-  totalAmount: string;
+  totalAmount: number;
   paymentMethod: "cod" | "online";
   address: {
     fullName: string;
@@ -47,11 +48,12 @@ const orderSchema = new mongoose.Schema<IOrder>(
         name: String,
         price: String,
         unit: String,
+        image:String,
         quantity: Number,
       },
     ],
     totalAmount: {
-      type: String,
+      type: Number,
     },
     paymentMethod: {
       type: String,
