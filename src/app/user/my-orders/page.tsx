@@ -1,3 +1,4 @@
+"use client"
 import MyOrders from '@/components/home/user/order/MyOrders';
 import React from 'react';
 

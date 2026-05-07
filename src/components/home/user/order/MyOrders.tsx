@@ -51,7 +51,7 @@ export default function MyOrdersPage() {
         <div className="max-w-4xl mx-auto h-18 px-4 flex items-center gap-4">
           <button
             onClick={() => router.push('/')}
-            className="text-green-600 hover:bg-green-100 hover:rounded-full p-4"
+            className="text-green-600 hover:bg-green-100 hover:rounded-full p-4 cursor-pointer"
           >
             <ArrowLeft size={26} />
           </button>
@@ -65,7 +65,39 @@ export default function MyOrdersPage() {
       {/* Orders */}
       {
         loading ? <OrderCardSkeleton/>: <>
-        
+        {
+          orders.length == 0 ? 
+           <motion.div
+    initial={{ opacity: 0, y: 20 }}
+    animate={{ opacity: 1, y: 0 }}
+    className=" p-10 text-center border border-gray-100 shadow-sm min-h-screen"
+  >
+    {/* Icon */}
+    <div className="w-24 h-24 mx-auto rounded-full bg-green-100 flex items-center justify-center">
+      <PackageCheck
+        size={45}
+        className="text-[#0ea44b]"
+      />
+    </div>
+
+    {/* Title */}
+    <h2 className="text-[28px] font-bold text-gray-800 mt-6">
+      No Orders Yet
+    </h2>
+
+    {/* Description */}
+    <p className="text-gray-500 mt-2 text-[17px]">
+      Looks like you haven’t placed any orders yet.
+    </p>
+
+    {/* Button */}
+    <button
+      onClick={() => router.push("/")}
+      className="mt-7 bg-[#0ea44b] hover:bg-green-700 text-white px-8 py-3 rounded-2xl text-[17px] font-semibold transition"
+    >
+      Start Shopping
+    </button>
+  </motion.div>:
       <div className="max-w-4xl mx-auto px-4 py-6 space-y-6">
         {orders.map((order, index) => {
           const isOpen = openId === String(order._id);
@@ -146,10 +178,8 @@ export default function MyOrdersPage() {
                   />
 
                   <p className="text-[16px] text-[#5f5f5f] leading-6.5">
-                    {order.address.fullAddress},{" "}
-                    {order.address.city},{" "}
-                    {order.address.state},{" "}
-                    {order.address.pinCode}
+                    {order.address.fullAddress}
+                    
                   </p>
                 </div>
 
@@ -165,7 +195,7 @@ export default function MyOrdersPage() {
                         : String(order._id)
                     )
                   }
-                  className="w-full flex items-center justify-between"
+                  className="w-full flex items-center justify-between cursor-pointer"
                 >
                   <div className="flex items-center gap-3">
                     <PackageCheck
@@ -302,6 +332,7 @@ export default function MyOrdersPage() {
           );
         })}
       </div>
+        }
         </>
       }
     </div>

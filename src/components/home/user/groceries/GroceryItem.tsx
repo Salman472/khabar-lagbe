@@ -5,7 +5,11 @@ import { motion } from "motion/react";
 import { ShoppingCart } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/redux/store";
-import { AddToCard, DecriseQuantity, IncriseQuantity } from "@/redux/cardSlice";
+import {
+  AddToCard,
+  DecriseQuantity,
+  IncriseQuantity,
+} from "@/redux/cardSlice";
 
 interface IGrocery {
   _id: mongoose.Types.ObjectId;
@@ -18,131 +22,184 @@ interface IGrocery {
   updatedAt?: Date;
 }
 
-const GroceryItem = ({ grocery }: { grocery: IGrocery }) => {
-  const { name, image, category, price, unit } = grocery;
-  const dispatch=useDispatch<AppDispatch>()
-  const {cardData}=useSelector((state:RootState)=>(state.card))
-  const cardItem=cardData.find(i=>i._id == grocery._id)
+const GroceryItem = ({
+  grocery,
+}: {
+  grocery: IGrocery;
+}) => {
+  const {
+    name,
+    image,
+    category,
+    price,
+    unit,
+  } = grocery;
+
+  const dispatch = useDispatch<AppDispatch>();
+
+  const { cardData } = useSelector(
+    (state: RootState) => state.card
+  );
+
+  const cardItem = cardData.find(
+    (i) => i._id == grocery._id
+  );
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 30 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: false }}
       transition={{ duration: 0.5 }}
-    //   whileHover={{ y: -10 }}
-      className="group relative rounded-3xl overflow-hidden  backdrop-blur-xl border border-gray-100  hover:shadow-2xl transition-all duration-300 mx-2 "
+      className="group relative rounded-2xl overflow-hidden backdrop-blur-xl border border-gray-100 shadow-lg hover:shadow-2xl transition-all duration-300 w-[80%] mx-auto sm:w-full  bg-white "
     >
       {/* Image Section */}
-      <div className="relative h-52 w-full overflow-hidden">
+      <div className="relative h-44 sm:h-48 md:h-52 w-full overflow-hidden">
         <Image
           src={image}
           alt={name}
           fill
-          className="object-cover transition-transform duration-500 group-hover:scale-110"
+          className="  object-cover transition-transform duration-500 group-hover:scale-110"
         />
 
         {/* Gradient Overlay */}
         <div className="absolute inset-0 bg-linear-to-t from-black/40 to-transparent" />
 
         {/* Category Badge */}
-        <span className="absolute top-3 left-3 bg-emerald-500 text-white text-xs px-3 py-1 rounded-full shadow">
+        <span className="absolute top-3 left-3 bg-emerald-500 text-white text-[10px] sm:text-xs px-2 sm:px-3 py-1 rounded-full shadow">
           {category}
         </span>
       </div>
 
       {/* Content */}
-      <div className="p-4 space-y-2">
-        <h3 className="text-gray-800 font-semibold text-lg line-clamp-1">
+      <div className="p-3 sm:p-4 space-y-2">
+        <h3 className="text-gray-800 font-semibold text-base sm:text-lg line-clamp-1">
           {name}
         </h3>
 
-        <p className="text-sm text-gray-500">
+        <p className="text-xs sm:text-sm text-gray-500">
           {unit}
         </p>
 
         {/* Price + Button */}
-        <div className="flex items-center justify-between mt-3">
-          <span className="text-emerald-600 font-bold text-lg">
+        <div className="flex items-center justify-between mt-3 gap-2">
+          <span className="text-emerald-600 font-bold text-base sm:text-lg">
             ৳ {price}
           </span>
-        {
-          !cardItem? <motion.button
-            whileTap={{ scale: 0.9 }}
-            whileHover={{ scale: 1.1 }}
-            className="p-2 rounded-full bg-emerald-100 text-emerald-600 hover:bg-emerald-500 hover:text-white transition cursor-pointer"
-            onClick={()=>dispatch(AddToCard({...grocery,quantity:1}))}
-          >
-            <ShoppingCart size={18} />
-          </motion.button> 
-          : 
-            <div className="flex items-center justify-center">
 
-      <motion.div
-        initial="rest"
-        whileHover="hover"
-        animate="rest"
-        variants={{
-          rest: { width: 32 },   
-          hover: { width: 105 }  
-        }}
-        transition={{ type: "spring", stiffness: 300, damping: 25 }}
-        className="relative h-8 flex items-center justify-center bg-white rounded-2xl shadow-md cursor-pointer overflow-hidden"
-      >
+          {!cardItem ? (
+            <motion.button
+              whileTap={{ scale: 0.9 }}
+              whileHover={{ scale: 1.1 }}
+              className="p-2 rounded-full bg-emerald-100 text-emerald-600 hover:bg-emerald-500 hover:text-white transition cursor-pointer shrink-0"
+              onClick={() =>
+                dispatch(
+                  AddToCard({
+                    ...grocery,
+                    quantity: 1,
+                  })
+                )
+              }
+            >
+              <ShoppingCart
+                size={18}
+                className="sm:w-5 sm:h-5"
+              />
+            </motion.button>
+          ) : (
+            <div className="flex items-center justify-center shrink-0">
+              <motion.div
+                initial="rest"
+                whileHover="hover"
+                animate="rest"
+                variants={{
+                  rest: { width: 32 },
+                  hover: { width: 105 },
+                }}
+                transition={{
+                  type: "spring",
+                  stiffness: 300,
+                  damping: 25,
+                }}
+                className="relative h-8 flex items-center justify-center bg-white rounded-2xl shadow-md cursor-pointer overflow-hidden"
+              >
+                {/* Default Count */}
+                <motion.span
+                  variants={{
+                    rest: {
+                      opacity: 1,
+                      x: 0,
+                    },
+                    hover: {
+                      opacity: 0,
+                      x: -20,
+                    },
+                  }}
+                  transition={{
+                    duration: 0.2,
+                  }}
+                  className="absolute text-sm sm:text-lg font-semibold cursor-pointer"
+                >
+                  {cardItem.quantity}
+                </motion.span>
 
-        {/* Default Count */}
-        <motion.span
-          variants={{
-            rest: { opacity: 1, x: 0 },
-            hover: { opacity: 0, x: -20 }
-          }}
-          transition={{ duration: 0.2 }}
-          className="absolute text-lg font-semibold cursor-pointer"
-        >
-          {cardItem.quantity}
-        </motion.span>
+                {/* Hover Content */}
+                <motion.div
+                  variants={{
+                    rest: {
+                      opacity: 0,
+                      x: 40,
+                    },
+                    hover: {
+                      opacity: 1,
+                      x: 0,
+                    },
+                  }}
+                  transition={{
+                    duration: 0.25,
+                  }}
+                  className="absolute right-2 flex items-center gap-2 cursor-pointer"
+                >
+                  {/* Minus */}
+                  <motion.button
+                    onClick={() =>
+                      dispatch(
+                        DecriseQuantity(
+                          grocery._id
+                        )
+                      )
+                    }
+                    whileTap={{ scale: 0.8 }}
+                    whileHover={{ scale: 1.1 }}
+                    className="w-6 h-6 flex items-center justify-center rounded-md bg-red-100 text-red-600 text-lg font-bold cursor-pointer"
+                  >
+                    -
+                  </motion.button>
 
-        {/* Hover Content */}
-        <motion.div
-          variants={{
-            rest: { opacity: 0, x: 40 },
-            hover: { opacity: 1, x: 0 }
-          }}
-          transition={{ duration: 0.25 }}
-          className="absolute right-2 flex items-center gap-2 cursor-pointer"
-        >
-          
-          {/* Minus */}
-          <motion.button
-          onClick={()=>dispatch(DecriseQuantity(grocery._id))}
-            whileTap={{ scale: 0.8 }}
-            whileHover={{ scale: 1.1 }}
-            className="w-6 h-6 flex items-center justify-center rounded-md bg-red-100 text-red-600 text-lg font-bold cursor-pointer"
-          >
-            -
-          </motion.button>
+                  {/* Count */}
+                  <span className="text-sm sm:text-lg font-semibold w-5 text-center">
+                    {cardItem.quantity}
+                  </span>
 
-          {/* Count */}
-          <span className="text-lg font-semibold w-5 text-center">
-            {cardItem.quantity}
-          </span>
-
-          {/* Plus */}
-          <motion.button
-          onClick={()=>dispatch(IncriseQuantity(grocery._id))}
-            whileTap={{ scale: 0.8 }}
-            whileHover={{ scale: 1.1 }}
-            className="w-6 h-6 flex items-center justify-center rounded-md bg-green-100 text-green-600 text-lg font-bold cursor-pointer"
-          >
-            +
-          </motion.button>
-
-        </motion.div>
-
-      </motion.div>
-    </div>
-
-        }
-          
+                  {/* Plus */}
+                  <motion.button
+                    onClick={() =>
+                      dispatch(
+                        IncriseQuantity(
+                          grocery._id
+                        )
+                      )
+                    }
+                    whileTap={{ scale: 0.8 }}
+                    whileHover={{ scale: 1.1 }}
+                    className="w-6 h-6 flex items-center justify-center rounded-md bg-green-100 text-green-600 text-lg font-bold cursor-pointer"
+                  >
+                    +
+                  </motion.button>
+                </motion.div>
+              </motion.div>
+            </div>
+          )}
         </div>
       </div>
 

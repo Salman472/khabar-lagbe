@@ -296,7 +296,7 @@ const Navbar = ({ user }: { user: IUser }) => {
                 <div className="mt-2 flex flex-col gap-1">
                   {user.role == 'user' && <>
                   <Link
-                    href="/myOrder"
+                    href="/user/my-orders"
                     onClick={() => setOpen(false)}
                     className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm text-gray-700 hover:bg-green-50 hover:text-green-600 transition"
                   >

@@ -1,3 +1,4 @@
+"use client"
 import ShoppingCartPage from '@/components/home/user/cart/Cart';
 import React from 'react';
 
