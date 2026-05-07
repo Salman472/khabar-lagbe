@@ -227,7 +227,7 @@ export default function CheckoutPage() {
       window.location.href=result.data.url
 
     } catch (error) {
-      console.log("stripe payment error", error);
+      console.log( error);
     }
   };
   return (
