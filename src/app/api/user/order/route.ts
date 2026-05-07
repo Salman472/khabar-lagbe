@@ -18,7 +18,7 @@ export async function POST(req: NextRequest) {
     // check user
     const user = await User.findById(userId);
     if (!user) {
-      return NextResponse.json({ message: "user not found" }, { status: 200 });
+      return NextResponse.json({ message: "user not found" }, { status: 400 });
     }
 
     // place order create

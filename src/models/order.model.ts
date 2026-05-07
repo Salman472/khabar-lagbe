@@ -14,6 +14,7 @@ interface IOrder {
     },
   ];
   totalAmount: number;
+  isPaid:boolean
   paymentMethod: "cod" | "online";
   address: {
     fullName: string;
@@ -55,6 +56,10 @@ const orderSchema = new mongoose.Schema<IOrder>(
     ],
     totalAmount: {
       type: Number,
+    },
+    isPaid:{
+      type:Boolean,
+      default:false
     },
     paymentMethod: {
       type: String,
