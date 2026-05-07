@@ -50,7 +50,7 @@ export default function ShoppingCartPage() {
     return Math.ceil(acc + Number(cart.price) * cart.quantity)
   }, 0);
 
-  const rule = rules.find((r) => subTotal > r.min);
+  const rule = rules.find((r) => subTotal >= r.min);
   const discount = rule ? Math.floor(subTotal * rule.rate) : 0;
   const total = Math.ceil(subTotal - discount)
 
