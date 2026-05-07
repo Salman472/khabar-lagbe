@@ -51,7 +51,7 @@ export async function POST(req: NextRequest) {
         quantity: 1,
       },
     ],
-    metadata:{orderId:newOrder._id}
+    metadata:{orderId:newOrder._id.toString()}
 
     });
     return NextResponse.json(

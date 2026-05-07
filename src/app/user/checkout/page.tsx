@@ -190,6 +190,46 @@ export default function CheckoutPage() {
       console.log("cod payment error", error);
     }
   };
+  // stripe payment function
+  const handleStripePayment = async () => {
+    setOrderLoading(true)
+    try {
+      if (!position) {
+        return null;
+      }
+      const result = await axios.post("/api/user/payment", {
+      
+        userId: userData?._id,
+        items: cardData.map((item) => ({
+          grocery: item._id,
+          name: item.name,
+          price: item.price,
+          image: item.image,
+          unit: item.unit,
+          quantity: item.quantity,
+        })),
+        totalAmount: total,
+        address: {
+          fullName: address.fullName,
+          mobile: address.mobile,
+          city: address.city,
+          state: address.state,
+          pinCode: address.pinCode,
+          fullAddress: address.fullAddress,
+          latitude: position[0],
+          longitude: position[1],
+        },
+        paymentMethod
+        
+      });
+      setOrderLoading(false)
+      
+      window.location.href=result.data.url
+
+    } catch (error) {
+      console.log("stripe payment error", error);
+    }
+  };
   return (
     <div className=" bg-gray-50 p-4 md:p-8">
       <Link
@@ -400,6 +440,8 @@ export default function CheckoutPage() {
             onClick={() => {
               if (paymentMethod == "cod") {
                 handleCod();
+              }else{
+                handleStripePayment()
               }
             }}
             whileTap={{ scale: 0.95 }}
