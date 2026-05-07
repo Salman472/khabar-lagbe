@@ -14,6 +14,7 @@ import {
   PackageCheck,
 } from "lucide-react";
 import { IOrder } from "@/models/order.model";
+import OrderCardSkeleton from "./MyOrderSkeleton";
 
 
 
@@ -22,6 +23,7 @@ export default function MyOrdersPage() {
 
   const [orders, setOrders] = useState<IOrder[]>([]);
   const [openId, setOpenId] = useState<string | null>(null);
+  const [loading, setLoading]=useState(true)
 
   useEffect(() => {
     const getMyOrders = async () => {
@@ -31,6 +33,7 @@ export default function MyOrdersPage() {
         );
 
         setOrders(result.data);
+        setLoading(false)
       } catch (error) {
         console.log("get orders error:", error);
       }
@@ -38,6 +41,8 @@ export default function MyOrdersPage() {
 
     getMyOrders();
   }, []);
+
+ 
 
   return (
     <div className="min-h-screen bg-[#f7f7f7]">
@@ -58,6 +63,9 @@ export default function MyOrdersPage() {
       </div>
 
       {/* Orders */}
+      {
+        loading ? <OrderCardSkeleton/>: <>
+        
       <div className="max-w-4xl mx-auto px-4 py-6 space-y-6">
         {orders.map((order, index) => {
           const isOpen = openId === String(order._id);
@@ -294,6 +302,8 @@ export default function MyOrdersPage() {
           );
         })}
       </div>
+        </>
+      }
     </div>
   );
 }
