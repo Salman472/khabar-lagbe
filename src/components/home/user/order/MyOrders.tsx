@@ -20,7 +20,21 @@ export default function MyOrders() {
   //     [orderId]: !prev[orderId]
   //   }));
   // };
-
+const [orders, setOrders]=useState<IOrder[]>()
+  useEffect(()=>{
+    const getMyOrders=async()=>{
+      try {
+        const result=await axios.get('/api/user/my-orders')
+        setOrders(result.data)
+        
+        
+      } catch (error) {
+        console.log('get orders error:', error);
+      }
+    }
+    getMyOrders()
+  },[])
+console.log(orders);
   return (
     <div className="min-h-screen bg-gray-50 pb-8">
       {/* Header */}
@@ -34,7 +48,7 @@ export default function MyOrders() {
       </div>
 
       <div>
-
+        
       </div>
     </div>
   );
