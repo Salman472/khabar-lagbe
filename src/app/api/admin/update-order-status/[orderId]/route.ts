@@ -15,6 +15,13 @@ export async function POST(req:NextRequest, {params}:{params:{orderId:string}}) 
             )
         }
         order.status=status
+
+        // find available delivery boy
+
+        let availableDeliveryBoy:any=[]
+        if(status === 'out of delivery' && !order.assignment){
+            
+        }
     } catch (error) {
         
     }
