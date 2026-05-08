@@ -20,7 +20,7 @@ export default function MyOrdersPage() {
   const router = useRouter();
 
   const [orders, setOrders] = useState<IOrder[]>([]);
-  const [openId, setOpenId] = useState<string | null>(null);
+  const [openId, setOpenId] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -91,7 +91,7 @@ export default function MyOrdersPage() {
           ) : (
             <div className="max-w-4xl mx-auto px-4 py-6 space-y-6">
               {orders.map((order, index) => {
-                const isOpen = openId === String(order._id);
+                const isOpen = openId.includes(String(order._id));
 
                 return (
                   <motion.div
@@ -165,7 +165,11 @@ export default function MyOrdersPage() {
                       {/* Toggle */}
                       <button
                         onClick={() =>
-                          setOpenId(isOpen ? null : String(order._id))
+                          setOpenId((prev) =>
+                            prev.includes(String(order._id))
+                              ? prev.filter((id) => id !== String(order._id))
+                              : [...prev, String(order._id)],
+                          )
                         }
                         className="w-full flex items-center justify-between cursor-pointer"
                       >

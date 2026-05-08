@@ -21,7 +21,7 @@ import ManageOrderSkeleton from "@/components/home/admin/ManageOrderSkeleton";
 const ManageOrders = () => {
   const [orders, setOrders] = useState<IOrder[]>([]);
   const [loading, setLoading] = useState(true);
-  const [expandedOrder, setExpandedOrder] = useState<string | null>(null);
+  const [expandedOrder, setExpandedOrder] = useState<string[]>([]);
   const deliveryStatus = ["pending", "out of delivery"];
   const router = useRouter();
 
@@ -41,7 +41,11 @@ const ManageOrders = () => {
   }, []);
 
   const toggleExpand = (orderId: string) => {
-    setExpandedOrder(expandedOrder === orderId ? null : orderId);
+    setExpandedOrder((prev) =>
+      prev.includes(orderId)
+        ? prev.filter((id) => id !== orderId)
+        : [...prev, orderId],
+    );
   };
 
   return (
@@ -92,7 +96,8 @@ const ManageOrders = () => {
                 className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden"
               >
                 {/* Order Header */}
-                <div className="p-5 flex flex-col md:flex-row md:items-start md:justify-between gap-4 border-b">
+                <div className="p-5 flex flex-col md:flex-row md:items-start md:justify-between gap-4 border-b border-b-gray-300 bg-green-50">
+
                   <div>
                     <div className="flex items-center gap-1 text-green-600">
                       <Package />
@@ -136,7 +141,7 @@ const ManageOrders = () => {
 
                     <select
                       defaultValue={order.status}
-                      className="bg-white border border-gray-200 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-400 cursor-pointer"
+                      className="bg-green-50 border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-400 cursor-pointer"
                     >
                       {deliveryStatus.map((ds) => (
                         <option key={ds} value={ds}>
@@ -144,8 +149,7 @@ const ManageOrders = () => {
                         </option>
                       ))}
 
-                      <option value="out of delivery">OUT OF DELIVERY</option>
-                      <option value="delevered">DELIVERED</option>
+                      
                     </select>
                   </div>
                 </div>
@@ -188,7 +192,7 @@ const ManageOrders = () => {
                 </div>
 
                 {/* Items Section */}
-                <div className="border-t">
+                <div className="border-t border-t-gray-300">
                   <button
                     onClick={() => toggleExpand(order._id!.toString())}
                     className="w-full px-5 py-4 flex items-center justify-between hover:bg-gray-50 transition-colors text-left cursor-pointer"
@@ -197,13 +201,13 @@ const ManageOrders = () => {
                       <PackageCheck size={18} className="text-[#0ea44b]" />
 
                       <span className="text-[17px] font-semibold text-[#3d3d3d]">
-                        {expandedOrder
+                        {expandedOrder.includes(order._id!.toString())
                           ? "Hide Order Items"
                           : `view ${order.items.length} Items`}
                       </span>
                     </div>
 
-                    {expandedOrder ? (
+                    {expandedOrder.includes(order._id!.toString()) ? (
                       <ChevronUp size={20} className="text-[#0ea44b]" />
                     ) : (
                       <ChevronDown size={20} className="text-[#0ea44b]" />
@@ -211,76 +215,76 @@ const ManageOrders = () => {
                   </button>
 
                   <AnimatePresence>
-                        {expandedOrder && (
-                          <motion.div
-                            initial={{
-                              opacity: 0,
-                              height: 0,
-                            }}
-                            animate={{
-                              opacity: 1,
-                              height: "auto",
-                            }}
-                            exit={{
-                              opacity: 0,
-                              height: 0,
-                            }}
-                            transition={{
-                              duration: 0.35,
-                            }}
-                            className="overflow-hidden"
-                          >
-                            <div className="mt-5 space-y-4">
-                              {order.items.map((item, i) => (
-                                <motion.div
-                                  key={i}
-                                  initial={{
-                                    opacity: 0,
-                                    y: 10,
-                                  }}
-                                  animate={{
-                                    opacity: 1,
-                                    y: 0,
-                                  }}
-                                  transition={{
-                                    delay: i * 0.08,
-                                  }}
-                                  className="bg-[#fafafa] border border-gray-100 rounded-2xl px-4 py-4 flex items-center justify-between"
-                                >
-                                  <div className="flex items-center gap-4">
-                                    <div className="relative w-17.5 h-17.5 bg-white rounded-xl overflow-hidden border border-gray-100">
-                                      <Image
-                                        src={item.image}
-                                        alt={item.name}
-                                        fill
-                                        className="object-cover"
-                                      />
-                                    </div>
+                    {expandedOrder.includes(order._id!.toString()) && (
+                      <motion.div
+                        initial={{
+                          opacity: 0,
+                          height: 0,
+                        }}
+                        animate={{
+                          opacity: 1,
+                          height: "auto",
+                        }}
+                        exit={{
+                          opacity: 0,
+                          height: 0,
+                        }}
+                        transition={{
+                          duration: 0.35,
+                        }}
+                        className="overflow-hidden"
+                      >
+                        <div className="mt-5 space-y-4">
+                          {order.items.map((item, i) => (
+                            <motion.div
+                              key={i}
+                              initial={{
+                                opacity: 0,
+                                y: 10,
+                              }}
+                              animate={{
+                                opacity: 1,
+                                y: 0,
+                              }}
+                              transition={{
+                                delay: i * 0.08,
+                              }}
+                              className="bg-[#fafafa] border border-gray-100 rounded-2xl px-4 py-4 flex items-center justify-between"
+                            >
+                              <div className="flex items-center gap-4">
+                                <div className="relative w-17.5 h-17.5 bg-white rounded-xl overflow-hidden border border-gray-100">
+                                  <Image
+                                    src={item.image}
+                                    alt={item.name}
+                                    fill
+                                    className="object-cover"
+                                  />
+                                </div>
 
-                                    <div>
-                                      <h3 className="text-[18px] font-semibold text-[#202020]">
-                                        {item.name}
-                                      </h3>
+                                <div>
+                                  <h3 className="text-[18px] font-semibold text-[#202020]">
+                                    {item.name}
+                                  </h3>
 
-                                      <p className="text-[15px] text-[#7a7a7a] mt-1">
-                                        {item.quantity} x {item.unit}
-                                      </p>
-                                    </div>
-                                  </div>
+                                  <p className="text-[15px] text-[#7a7a7a] mt-1">
+                                    {item.quantity} x {item.unit}
+                                  </p>
+                                </div>
+                              </div>
 
-                                  <h2 className="text-[24px] font-bold text-[#2b2b2b]">
-                                    ৳{Number(item.price) * item.quantity}
-                                  </h2>
-                                </motion.div>
-                              ))}
-                            </div>
-                          </motion.div>
-                        )}
-                      </AnimatePresence>
+                              <h2 className="text-[24px] font-bold text-[#2b2b2b]">
+                                ৳{Number(item.price) * item.quantity}
+                              </h2>
+                            </motion.div>
+                          ))}
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
                 </div>
 
                 {/* Footer */}
-                <div className="px-5 py-4 border-t bg-gray-50 flex items-center justify-between text-sm">
+                <div className="px-5 py-4 border-t border-t-gray-300 bg-gray-50 flex items-center justify-between text-sm">
                   <div className="flex items-center gap-2 text-emerald-600">
                     🚚{" "}
                     <span className="font-medium">
