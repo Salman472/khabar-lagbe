@@ -116,7 +116,7 @@ const Navbar = ({ user }: { user: IUser }) => {
 
               <Link
                 className="flex items-center gap-3 bg-white/10 hover:bg-white/20 transition p-3 rounded-xl cursor-pointer"
-                href={""}
+                href={"/admin/manage-orders"}
               >
                 <ClipboardCheck className="h-5 w-5" />
                 Manage Orders
@@ -221,7 +221,7 @@ const Navbar = ({ user }: { user: IUser }) => {
 
               <Link
                 className="flex items-center gap-2 bg-white text-green-700 font-semibold px-4 py-2 rounded-full hover:bg-green-100 transition-all"
-                href={""}
+                href={"/admin/manage-orders"}
               >
                 <ClipboardCheck className="h-5 w-5" />
                 Manage Orders
@@ -332,8 +332,7 @@ const Navbar = ({ user }: { user: IUser }) => {
                 <Search className="h-5 w-5 mr-2 text-gray-500" />
                 <form className="w-full">
                   <input
-                    // onChange={(e)=>setSearch(e.target.value)}
-                    // value={search}
+                    
                     type="text"
                     placeholder="Search Groceries..."
                     className="w-full outline-none text-gray-700 placeholder-bg-gray-400"
