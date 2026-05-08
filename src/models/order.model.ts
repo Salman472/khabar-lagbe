@@ -26,7 +26,7 @@ export interface IOrder {
     latitude: number;
     longitude: number;
   };
-  status: "pending" | "out of delivery" | "delevered";
+  status: "pending" | "out of delivery" | "delivered";
   createdAt?: Date;
   updatedAt?: Date;
 }
