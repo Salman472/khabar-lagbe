@@ -4,6 +4,8 @@ import { AnimatePresence, motion } from "motion/react";
 import React, { useEffect, useMemo, useState } from "react";
 import Image from "next/image";
 import { getSocket } from "@/lib/socket";
+import { useSelector } from "react-redux";
+import { RootState } from "@/redux/store";
 
 const Hero = () => {
   const slides = useMemo(
@@ -46,8 +48,9 @@ const Hero = () => {
   );
 
   const [current, setCurrent] = useState(0);
-
+  
   useEffect(() => {
+    
     const timer = setInterval(() => {
       setCurrent((prev) => (prev + 1) % slides.length);
     }, 4000);
@@ -55,10 +58,15 @@ const Hero = () => {
   }, [slides]);
 
   // socket function call
+  const {userData}=useSelector((state:RootState)=>(state.user))
   useEffect(()=>{
-    let socket=getSocket()
-    
-  },[])
+    if(userData){
+
+      let socket=getSocket()
+      socket.emit('identity', userData._id)
+    }
+
+  },[userData])
 
   return (
     <div className="relative w-[95%] mx-auto mt-20 sm:mt-28 h-[70vh] sm:h-[80vh] rounded-2xl sm:rounded-3xl overflow-hidden shadow-2xl">
