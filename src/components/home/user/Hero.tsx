@@ -3,6 +3,7 @@ import { Leaf, ShoppingBag, Smartphone, Truck } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 import React, { useEffect, useMemo, useState } from "react";
 import Image from "next/image";
+import { getSocket } from "@/lib/socket";
 
 const Hero = () => {
   const slides = useMemo(
@@ -52,6 +53,12 @@ const Hero = () => {
     }, 4000);
     return () => clearInterval(timer);
   }, [slides]);
+
+  // socket function call
+  useEffect(()=>{
+    let socket=getSocket()
+    
+  },[])
 
   return (
     <div className="relative w-[95%] mx-auto mt-20 sm:mt-28 h-[70vh] sm:h-[80vh] rounded-2xl sm:rounded-3xl overflow-hidden shadow-2xl">
