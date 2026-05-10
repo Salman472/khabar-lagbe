@@ -1,4 +1,5 @@
 import connectDb from "@/lib/db";
+import DeliveryAssignment from "@/models/deliveryAssignment.model";
 import Order from "@/models/order.model";
 import User from "@/models/user.model";
 import { NextRequest, NextResponse } from "next/server";
@@ -35,6 +36,11 @@ export async function POST(
         },
       });
       const nearByIds=nearByDeliveryBoys.map((b)=>b._id)
+      const busyIds=await DeliveryAssignment.find({
+        assignedTo:{$in:nearByIds},
+        status:{$nin:["brodcasted", "completed"]}
+      }).distinct('assignedId')
+      const busyIdSet=new Set(busyIds.map(b=>String(b)))
     }
   } catch (error) {}
 }
