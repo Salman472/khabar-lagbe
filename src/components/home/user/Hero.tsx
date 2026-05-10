@@ -3,9 +3,7 @@ import { Leaf, ShoppingBag, Smartphone, Truck } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 import React, { useEffect, useMemo, useState } from "react";
 import Image from "next/image";
-import { getSocket } from "@/lib/socket";
-import { useSelector } from "react-redux";
-import { RootState } from "@/redux/store";
+
 
 const Hero = () => {
   const slides = useMemo(
@@ -57,16 +55,7 @@ const Hero = () => {
     return () => clearInterval(timer);
   }, [slides]);
 
-  // socket function call
-  const {userData}=useSelector((state:RootState)=>(state.user))
-  useEffect(()=>{
-    if(userData){
-
-      let socket=getSocket()
-      socket.emit('identity', userData._id)
-    }
-
-  },[userData])
+  
 
   return (
     <div className="relative w-[95%] mx-auto mt-20 sm:mt-28 h-[70vh] sm:h-[80vh] rounded-2xl sm:rounded-3xl overflow-hidden shadow-2xl">
