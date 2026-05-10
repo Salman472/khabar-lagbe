@@ -28,7 +28,7 @@ const ManageOrders = () => {
   useEffect(() => {
     const getOrders = async () => {
       try {
-        const result = await axios.get("/api/admin/get-orders");
+        const result = await axios.get("/api/admin/manage-orders");
         setOrders(result.data);
       } catch (error) {
         console.log("get admin orders error", error);
@@ -97,7 +97,6 @@ const ManageOrders = () => {
               >
                 {/* Order Header */}
                 <div className="p-5 flex flex-col md:flex-row md:items-start md:justify-between gap-4 border-b border-b-gray-300 bg-green-50">
-
                   <div>
                     <div className="flex items-center gap-1 text-green-600">
                       <Package />
@@ -148,8 +147,6 @@ const ManageOrders = () => {
                           {ds.toUpperCase()}
                         </option>
                       ))}
-
-                      
                     </select>
                   </div>
                 </div>
