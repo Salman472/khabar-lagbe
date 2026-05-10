@@ -34,7 +34,7 @@ export async function POST(
           },
         },
       });
-     
+      const nearByIds=nearByDeliveryBoys.map((b)=>b._id)
     }
   } catch (error) {}
 }
