@@ -41,6 +41,7 @@ export async function POST(
         status:{$nin:["brodcasted", "completed"]}
       }).distinct('assignedId')
       const busyIdSet=new Set(busyIds.map(b=>String(b)))
+      const availableDeliveryBoys=nearByDeliveryBoys.filter(b=>!busyIdSet.has(String(b._id)))
     }
   } catch (error) {}
 }
