@@ -22,6 +22,7 @@ const ManageOrders = () => {
   const [orders, setOrders] = useState<IOrder[]>([]);
   const [loading, setLoading] = useState(true);
   const [expandedOrder, setExpandedOrder] = useState<string[]>([]);
+  const [status, setStatus] = useState<string>();
   const deliveryStatus = ["pending", "out of delivery"];
   const router = useRouter();
 
@@ -48,6 +49,21 @@ const ManageOrders = () => {
     );
   };
 
+  // update status
+
+  const updateStatus = async (orderId: string, status: string) => {
+    try {
+      const result = await axios.post(
+        `/api/admin/update-order-status/${orderId}`,
+        { status },
+      );
+      console.log(result.data);
+      setStatus(status)
+    } catch (error) {
+      console.log("status update error:", error);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
@@ -68,11 +84,13 @@ const ManageOrders = () => {
       <div className="max-w-4xl mx-auto">
         {/* Orders List */}
         <div className="space-y-6">
-          {orders.length === 0 ? (
+          {loading ? (
+            <ManageOrderSkeleton />
+          ) : orders.length === 0 ? (
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              className=" p-10 text-center border border-gray-100 shadow-sm min-h-screen"
+              className=" p-10 text-center min-h-screen"
             >
               {/* Icon */}
               <div className="w-24 h-24 mx-auto rounded-full bg-green-100 flex items-center justify-center">
@@ -84,8 +102,6 @@ const ManageOrders = () => {
                 No Orders Yet
               </h2>
             </motion.div>
-          ) : loading ? (
-            <ManageOrderSkeleton />
           ) : (
             orders.map((order, index) => (
               <motion.div
@@ -127,19 +143,22 @@ const ManageOrders = () => {
                   <div className="flex flex-col items-end gap-2">
                     <div
                       className={`text-xs font-semibold px-3 py-1 rounded-full capitalize ${
-                        order.status === "delivered"
+                        status === "delivered"
                           ? "bg-green-100 text-green-700"
-                          : order.status === "pending"
+                          : status === "pending"
                             ? "bg-yellow-100 text-red-700"
                             : "bg-blue-100 text-blue-700"
                       }`}
                     >
                       <span className="w-2 h-2 bg-yellow-500 rounded-full animate-pulse"></span>
-                      {order.status}
+                      {status}
                     </div>
 
                     <select
-                      defaultValue={order.status}
+                      onChange={(e) =>
+                        updateStatus(order._id!.toString(), e.target.value)
+                      }
+                      value={status}
                       className="bg-green-50 border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-400 cursor-pointer"
                     >
                       {deliveryStatus.map((ds) => (
@@ -283,10 +302,7 @@ const ManageOrders = () => {
                 {/* Footer */}
                 <div className="px-5 py-4 border-t border-t-gray-300 bg-gray-50 flex items-center justify-between text-sm">
                   <div className="flex items-center gap-2 text-emerald-600">
-                    🚚{" "}
-                    <span className="font-medium">
-                      Delivery: {order.status}
-                    </span>
+                    🚚 <span className="font-medium">Delivery: {status}</span>
                   </div>
                   <div className="font-semibold text-xl flex items-center gap-1">
                     Total: <span className="text-lg font-black">৳</span>
